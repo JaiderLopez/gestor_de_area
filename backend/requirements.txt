@@ -1,0 +1,5 @@
+# Django
+django
+djangorestframework
+psycopg2-binary
+django-cors-headers

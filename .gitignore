@@ -1,0 +1,50 @@
+# Ignorar archivos y directorios generados por Python/Django
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+db.sqlite3  # Si se usa SQLite para desarrollo
+
+# Ignorar archivos y directorios generados por Node/React
+node_modules/
+build/
+dist/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar archivos de IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de configuración de Docker (si aplica)
+# .dockerignore
+# docker-compose.yml
+
+# Ignorar archivos de cobertura de tests
+.coverage
+.coverage.*
+htmlcov/
+
+# Ignorar archivos de datos sensibles o temporales
+*.sqlite3
+*.backup
+*.dump
+*.csv
+*.xlsx
+*.xls
+*.tmp
+*~

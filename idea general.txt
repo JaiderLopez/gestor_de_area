@@ -1,0 +1,54 @@
+-------- Sistema Gestor del Área de Sistemas de LA EMPRESA ---------------
+
+Propósito general: Diseñar, desarrollar e implementar una aplicación centralizada para gestionar diferentes aspectos del area de sistemas de LA EMPRESA.
+
+PROBLEMAS IDENTIFICADOS:
+• Existen muchos discos físicos tanto hdd, como ssd o cd con información de la empresa pero no se tiene un registro de que información hay en cada disco.
+• No hay sistema formal para gestionar e inventariar recursos tecnológicos de la empresa.
+• a diario se hacen peticiones al area de sistemas de las demás areas pero no se lleva un registro de los incidentes diarios ni tampoco se hace un análisis grafico o estadístico de estos.
+• los mantenimientos están documentados en diferentes archivos y carpetas según el tipo.
+
+
+Propuestas para la aplicación:
+
+Módulo de gestor de discos: (admin)
+• Debe poder registrar, actualizar y dar de baja (discos malos) a un disco.
+• debe haber una vista con los discos en forma de tarjetas con su nombre, y lista de contenido resumido, las tarjetas son de tamaño fijo.
+• los datos de registro de discos son: nombre, tamaño del disco, tipo de disco, y una lista de los contenidos del disco.
+• el usuario agrega un nuevo disco, selecciona desde el explorador de archivo el disco que desea agregar, se hace un recorrido del disco hasta la profundidad 1, con nombre de cada carpeta/archivo y fecha de la ultima modificación, para los archivos se agrega el peso del archivo automáticamente, y para las carpetas el usuario debe agregar el peso manualmente.
+• la lista de discos debe poder ser filtrada, por nombre, por contenido, por fecha de los contenido, por espacio libre.
+
+Módulo de inventario: (admin)
+•	Registro de cada dispositivo con datos técnicos, ubicación y responsable.
+•	El panel debe tener categorías según los dispositivos.
+•	Estado del dispositivo (activo, dañado, en reparación, disponible).
+•	Gestión de movimientos de los dispositivos entre áreas o fincas de la empresa.
+
+Módulo de reportes: (users / admin)
+•	Registro de incidencias por tipo (impresora, red, dispositivo, etc.).
+•	Posibilidad de adjuntar evidencia (capturas, descripción).
+•	Mantener un historial de reportes y posibilidad de exportar un archivo general de reportes.
+
+Módulo de mantenimientos: (admin)
+•	Historial de mantenimientos por dispositivo.
+•	Fechas, tipo de mantenimiento, responsable técnico.
+•	Alertas o recomendaciones de mantenimiento preventivo
+
+Concideraciones generales:
+• La aplicación se desplegará localmente en la red cableada de LA EMPRESA por lo que tanto el frontend y backend de la aplicación debe tener una ip fija para acceder a la app desde el servidos local desde cualquier dispositivo en la red de LA EMPRESA.
+• debe seguridad en las rutas mediante autenticación.
+• no existe aún una base de datos para gestionar toda está información, ayúdame a diseñarlas y crearlas en una base de datos local, puede ser MySQL o PostgreSQL.
+• quiero que desarrollemos un modulo a la vez, pero si se cree en principio la estructura completa del proyecto, dividido desde la raíz en backend y frontend.
+
+
+
+
+
+
+
+
+
+
+
+
+
