@@ -51,10 +51,10 @@ Aquí se listan las tareas principales para la construcción del **Sistema Gesto
   - [x] 11.2. Crear Filtro de Espacio Libre (ej. `espacio_libre_min`, `espacio_libre_max` en `DiscoFilter`).
 
 ## Fase 2: Frontend - Módulo de Discos
-
+ 
 - [ ] **12. Configuración Inicial del Frontend:**
-  - [ ] 12.1. Configurar el proyecto de React (si no está hecho).
-  - [ ] 12.2. Crear la estructura de carpetas para el módulo de discos (e.g., `src/modules/discos`).
+  - [x] 12.1. Configurar el proyecto de React (si no está hecho).
+  - [x] 12.2. Crear la estructura de carpetas para el módulo de discos (e.g., `src/modules/discos`).
   - [ ] 12.3. Definir las rutas de navegación para el módulo de discos (e.g., `/discos`, `/discos/new`, `/discos/:id/edit`).
 
 - [ ] **13. Desarrollo de la Vista Principal (Dashboard de Discos):**
