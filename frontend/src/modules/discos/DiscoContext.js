@@ -15,9 +15,9 @@ export const DiscoProvider = ({ children }) => {
     try {
       const data = await getDiscos(url);
       if (isNewQuery) {
-        setDiscos(data.results);
+        setDiscos(data || []);
       } else {
-        setDiscos(prevDiscos => [...prevDiscos, ...data.results]);
+        setDiscos(prevDiscos => [...prevDiscos, ...(data || [])]);
       }
       setNextPage(data.next);
     } catch (error) {
