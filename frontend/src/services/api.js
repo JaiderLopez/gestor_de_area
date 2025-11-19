@@ -44,9 +44,9 @@ export const deleteDisco = (id) => {
 };
 
 export const scanDisco = (path) => {
-  return request(`${API_BASE_URL}/discos/scan/`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ path }),
+  const url = new URL(`${API_BASE_URL}/discos/scan/`);
+  url.searchParams.append('path', path);
+  return request(url.toString(), {
+    method: 'GET',
   });
 };

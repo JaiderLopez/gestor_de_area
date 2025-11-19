@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { scanDisco } from '../../services/api';
 import './Discos.css'; // Importar el CSS
@@ -17,6 +17,7 @@ const DiscoForm = ({ disco, onSave }) => {
   const [scanLoading, setScanLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (disco) {
@@ -59,9 +60,24 @@ const DiscoForm = ({ disco, onSave }) => {
     }));
   };
 
+  const handleFileSelect = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      // La propiedad webkitRelativePath nos da la ruta relativa del archivo dentro de la carpeta seleccionada.
+      // Ej: "MiCarpeta/subcarpeta/archivo.txt". Queremos solo la parte de la carpeta principal.
+      const fullPath = files[0].webkitRelativePath;
+      const directoryPath = fullPath.split('/')[0];
+      setScanPath(directoryPath);
+    }
+  };
+
+  const handleSelectFolderClick = () => {
+    fileInputRef.current.click();
+  };
+
   const handleScan = async () => {
     if (!scanPath) {
-      setMessage({ type: 'error', text: 'Por favor, ingrese una ruta para escanear.' });
+      setMessage({ type: 'error', text: 'Por favor, seleccione una carpeta para escanear.' });
       return;
     }
     setScanLoading(true);
@@ -149,13 +165,23 @@ const DiscoForm = ({ disco, onSave }) => {
         <h3>Escanear Contenido</h3>
         <div className="scan-controls">
           <input
+            type="file"
+            webkitdirectory="true"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            style={{ display: 'none' }}
+          />
+          <input
             type="text"
             value={scanPath}
-            onChange={(e) => setScanPath(e.target.value)}
-            placeholder="Ruta del directorio a escanear"
-            disabled={scanLoading}
+            placeholder="Ninguna carpeta seleccionada"
+            readOnly
+            className="scan-path-input"
           />
-          <button type="button" onClick={handleScan} disabled={scanLoading}>
+          <button type="button" onClick={handleSelectFolderClick} disabled={scanLoading}>
+            Seleccionar Carpeta
+          </button>
+          <button type="button" onClick={handleScan} disabled={scanLoading || !scanPath}>
             {scanLoading ? 'Escaneando...' : 'Escanear'}
           </button>
         </div>

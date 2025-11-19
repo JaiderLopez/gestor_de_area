@@ -1,8 +1,120 @@
-/* Discos.css */
+/* ==========================================================================
+   Global Styles & Variables
+   ========================================================================== */
 
-/* General Dashboard Styles */
+:root {
+  --primary-color: #262e75;
+  --primary-hover-color: #1a2057; /* Un poco más oscuro para el hover */
+  --secondary-color: #0da049;
+  --secondary-hover-color: #0a8039; /* Un poco más oscuro para el hover */
+  --danger-color: #dc3545;
+  --danger-hover-color: #c82333;
+  --success-color: #0da049;
+  --light-color: #f0f2f5; /* Un fondo gris muy claro para contraste */
+  --dark-color: #2b2b2b;
+  --text-color: #2b2b2b;
+  --border-color: #dee2e6;
+  --white-color: #ffffff;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.12);
+  --border-radius: 0.375rem;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--light-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 2rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--dark-color);
+  font-weight: 600;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--primary-hover-color);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  color: var(--white-color);
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  color: var(--white-color);
+  background-color: var(--primary-hover-color);
+  border-color: var(--primary-hover-color);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+  color: var(--white-color);
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+  color: var(--white-color);
+  background-color: var(--secondary-hover-color);
+  border-color: var(--secondary-hover-color);
+  text-decoration: none;
+}
+
+.btn-delete {
+  color: var(--danger-color);
+  background-color: transparent;
+  border: 1px solid var(--danger-color);
+}
+
+.btn-delete:hover {
+  color: var(--white-color);
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Dashboard & Card Styles
+   ========================================================================== */
+
 .dashboard-container {
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -11,240 +123,260 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.filters-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-}
-
-.filters-container input,
-.filters-container select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  flex-grow: 1;
-  min-width: 180px; /* Adjust for better wrapping */
-}
-
-.filters-container button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.filters-container button:hover {
-  background-color: #0056b3;
+  margin-bottom: 2rem;
 }
 
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 1.5rem;
 }
 
-/* Button Styles */
-.btn {
-  padding: 10px 15px;
-  border-radius: 4px;
-  text-decoration: none;
-  color: white;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.2s;
-}
-.btn-primary {
-  background-color: #007bff;
-}
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-.btn-secondary {
-  background-color: #6c757d;
-}
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-
-/* Disco Card Styles */
 .disco-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
+  background-color: var(--white-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  transition: all 0.2s ease-in-out;
 }
 
 .disco-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
 }
 
 .card-header h3 {
   margin: 0;
-  color: #333;
 }
 
 .card-actions {
   display: flex;
-  gap: 8px; /* Space between buttons/links */
+  gap: 0.5rem;
+  align-items: center;
 }
 
-.card-actions a, .card-actions .btn-delete {
-  font-size: 0.9rem;
-  text-decoration: none;
-  padding: 6px 10px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-}
-
-.card-actions a {
-  color: #007bff;
-  border: 1px solid #007bff;
-  background-color: transparent;
-}
-
-.card-actions a:hover {
-  background-color: #e7f3ff;
-}
-
-.card-actions .btn-delete {
-  background-color: #dc3545;
-  color: white;
-  border: 1px solid #dc3545;
-}
-
-.card-actions .btn-delete:hover:not(:disabled) {
-  background-color: #c82333;
-  border-color: #bd2130;
-}
-
-.card-actions .btn-delete:disabled {
-  background-color: #e0a8b0;
-  border-color: #e0a8b0;
-  cursor: not-allowed;
-}
-
-
-.content-summary {
-  margin-top: 12px;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-}
-
-.content-summary h4 {
-  margin: 0 0 8px 0;
-  font-size: 1rem;
-  color: #555;
+.card-actions a, .card-actions button {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .content-summary ul {
-  margin: 0;
-  padding-left: 20px;
+  padding-left: 1.2rem;
+  margin: 0.5rem 0 0;
   font-size: 0.9rem;
   color: #666;
 }
 
-.content-summary li {
-  margin-bottom: 4px;
+.load-more-container {
+  text-align: center;
+  margin-top: 2rem;
 }
 
-.remaining-count {
-  font-style: italic;
-  color: #888;
-}
-
-
-/* Form Styles */
-.disco-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 25px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background-color: #fff;
-}
-
-.disco-form label {
-  font-weight: bold;
-  margin-bottom: -10px;
-}
-
-.disco-form input,
-.disco-form select,
-.disco-form textarea {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.disco-form button {
-  padding: 12px 20px;
+.load-more-button {
+  background-color: var(--primary-color);
+  color: var(--white-color);
   border: none;
-  border-radius: 4px;
-  background-color: #28a745;
-  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  font-size: 1.1rem;
   transition: background-color 0.2s;
 }
 
-.disco-form button:hover:not(:disabled) {
-  background-color: #218838;
+.load-more-button:hover {
+  background-color: var(--primary-hover-color);
 }
 
-.disco-form button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+/* ==========================================================================
+   Form & Input Styles
+   ========================================================================== */
+
+.disco-form {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--white-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
 }
 
-/* Validation and Messages */
-.input-error {
-  border-color: #dc3545;
+.disco-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
 }
 
-.error-text {
-  color: #dc3545;
-  font-size: 0.9rem;
-  margin-top: -10px;
+.disco-form input[type="text"],
+.disco-form input[type="number"],
+.disco-form input[type="date"],
+.disco-form select,
+.disco-form textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  background-color: var(--white-color);
+  background-clip: padding-box;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
 }
+
+.disco-form input:focus,
+.disco-form select:focus,
+.disco-form textarea:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.disco-form .input-error {
+  border-color: var(--danger-color);
+}
+
+.disco-form .error-text {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: -0.75rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.disco-form button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.disco-form button[type="submit"]:hover {
+  background-color: var(--primary-hover-color);
+}
+
+/* ==========================================================================
+   Filter & Scan Sections
+   ========================================================================== */
+
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: var(--white-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.filters-container input,
+.filters-container select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+}
+
+.filters-container button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+}
+
+.filters-container .btn-secondary {
+  background-color: var(--secondary-color);
+}
+
+.scan-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.scan-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+
+.scan-controls .scan-path-input {
+  flex-grow: 1;
+  background-color: #e9ecef; /* Un color de fondo para indicar que es de solo lectura */
+  cursor: default;
+}
+
+.scan-controls button {
+  flex-shrink: 0; /* Evita que los botones se encojan */
+}
+
+.scan-controls input {
+  flex-grow: 1;
+}
+
+/* ==========================================================================
+   Table Styles
+   ========================================================================== */
+
+.content-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.content-table th,
+.content-table td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.content-table th {
+  background-color: var(--light-color);
+  font-weight: 600;
+}
+
+.content-table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.content-weight-input {
+  width: 80px;
+  padding: 0.25rem;
+}
+
+/* ==========================================================================
+   Message & Status Styles
+   ========================================================================== */
 
 .message {
-  padding: 15px;
-  border-radius: 5px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: var(--border-radius);
   text-align: center;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
 }
 
 .message.success {
@@ -259,78 +391,9 @@
   border: 1px solid #f5c6cb;
 }
 
-/* Scan Section */
-.scan-section {
-  border-top: 1px solid #eee;
-  padding-top: 15px;
-  margin-top: 10px;
-}
-
-.scan-controls {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.scan-controls input {
-  flex-grow: 1;
-}
-
-.scan-controls button {
-  background-color: #17a2b8;
-  flex-shrink: 0;
-}
-
-.scan-controls button:hover:not(:disabled) {
-  background-color: #117a8b;
-}
-
-/* Content Table */
-.content-table {
-  width: 100%;
-  margin-top: 15px;
-  border-collapse: collapse;
-}
-
-.content-table th,
-.content-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-
-.content-table th {
-  background-color: #f2f2f2;
-}
-
-.content-weight-input {
-  width: 80px;
-  padding: 5px;
-}
-
-/* Utility Classes */
-.error-message {
-  color: #721c24;
-  background-color: #f8d7da;
-  padding: 10px;
-  border-radius: 5px;
+.loading-message, .error-message {
   text-align: center;
-}
-
-.loading-message {
-  text-align: center;
+  padding: 2rem;
   font-size: 1.2rem;
-  padding: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .filters-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
+  color: var(--secondary-color);
 }

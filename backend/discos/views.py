@@ -43,17 +43,14 @@ class DiscoScanView(APIView):
     """
     API endpoint para iniciar el escaneo de un disco.
     Recibe una ruta de directorio y devuelve su contenido (archivos/carpetas)
-    hasta profundidad 1.
+    en formato JSON sin guardarlo en la base de datos.
     """
-    def post(self, request, *args, **kwargs):
-        path_to_scan = request.data.get('path')
-        disco_nombre = request.data.get('disco_nombre')
-        disco_tipo = request.data.get('disco_tipo')
-        disco_tamanio_gb = request.data.get('disco_tamanio_gb')
+    def get(self, request, *args, **kwargs):
+        path_to_scan = request.query_params.get('path')
 
-        if not all([path_to_scan, disco_nombre, disco_tipo, disco_tamanio_gb]):
+        if not path_to_scan:
             return Response(
-                {"error": "Se requieren 'path', 'disco_nombre', 'disco_tipo' y 'disco_tamanio_gb'."},
+                {"error": "Se requiere la 'path' del directorio a escanear como parámetro de consulta."},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -70,81 +67,40 @@ class DiscoScanView(APIView):
             )
 
         try:
-            # Get or create Disco instance
-            disco, created = Disco.objects.get_or_create(
-                nombre=disco_nombre,
-                defaults={
-                    'tipo': disco_tipo,
-                    'tamanio_gb': disco_tamanio_gb
-                }
-            )
-            if not created:
-                # If disco already exists, update its properties if necessary
-                disco.tipo = disco_tipo
-                disco.tamanio_gb = disco_tamanio_gb
-                disco.save()
-            
-            # Clear existing contents for this disco before adding new ones
-            # This ensures that if files were removed from the disk, they are also removed from the database
-            ContenidoDisco.objects.filter(disco=disco).delete()
-
             scanned_contents_data = []
             for item_name in os.listdir(path_to_scan):
                 item_path = os.path.join(path_to_scan, item_name)
                 
-                # Excluir directorios ocultos o de sistema si es necesario
                 if item_name.startswith('.') or item_name.startswith('$'):
                     continue
 
-                if os.path.isfile(item_path):
-                    try:
+                try:
+                    mod_timestamp = os.path.getmtime(item_path)
+                    mod_date = datetime.fromtimestamp(mod_timestamp).date()
+                    
+                    if os.path.isfile(item_path):
                         size_bytes = os.path.getsize(item_path)
-                        size_gb = round(size_bytes / (1024**3), 2) # Convert bytes to GB
-                        mod_timestamp = os.path.getmtime(item_path)
-                        mod_date = datetime.fromtimestamp(mod_timestamp).date() # Get date object
+                        size_gb = round(size_bytes / (1024**3), 2)
                         
-                        ContenidoDisco.objects.create(
-                            disco=disco,
-                            nombre=item_name,
-                            fecha_modificacion=mod_date,
-                            peso_gb=size_gb
-                        )
                         scanned_contents_data.append({
                             "nombre": item_name,
                             "fecha_modificacion": mod_date.strftime('%Y-%m-%d'),
                             "peso_gb": size_gb,
-                            "es_carpeta": False
                         })
-                    except OSError:
-                        # Handle cases where file might be inaccessible
-                        continue
-                elif os.path.isdir(item_path):
-                    try:
-                        mod_timestamp = os.path.getmtime(item_path)
-                        mod_date = datetime.fromtimestamp(mod_timestamp).date() # Get date object
-                        
-                        ContenidoDisco.objects.create(
-                            disco=disco,
-                            nombre=item_name,
-                            fecha_modificacion=mod_date,
-                            peso_gb=0.0 # Peso a ser agregado manualmente por el usuario
-                        )
+                    elif os.path.isdir(item_path):
                         scanned_contents_data.append({
                             "nombre": item_name,
                             "fecha_modificacion": mod_date.strftime('%Y-%m-%d'),
-                            "peso_gb": 0.0,
-                            "es_carpeta": True
+                            "peso_gb": 0.0, # El peso de las carpetas se puede calcular o dejar en 0
                         })
-                    except OSError:
-                        # Handle cases where directory might be inaccessible
-                        continue
+                except OSError:
+                    # Ignorar archivos o carpetas a los que no se puede acceder
+                    continue
             
-            # Serialize the updated Disco object with its new contents
-            serializer = DiscoSerializer(disco)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(scanned_contents_data, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response(
-                {"error": f"Error al procesar el escaneo del disco: {str(e)}"},
+                {"error": f"Error al procesar el escaneo: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

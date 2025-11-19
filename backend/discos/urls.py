@@ -25,8 +25,13 @@ disco_contenidos_detail = ContenidoDiscoViewSet.as_view({
 # Las URLs de la API son determinadas automáticamente por el router,
 # más las URLs anidadas que hemos definido manualmente.
 urlpatterns = [
+    # Rutas específicas primero para evitar conflictos con el router
+    path('discos/scan/', DiscoScanView.as_view(), name='disco-scan'),
+    
+    # Rutas generadas por el router
     path('', include(router.urls)),
+    
+    # Rutas anidadas (si es necesario que estén separadas)
     path('discos/<int:disco_pk>/contenidos/', disco_contenidos_list, name='disco-contenidos-list'),
     path('discos/<int:disco_pk>/contenidos/<int:pk>/', disco_contenidos_detail, name='disco-contenidos-detail'),
-    path('discos/scan/', DiscoScanView.as_view(), name='disco-scan'), # New URL for scanning
 ]
