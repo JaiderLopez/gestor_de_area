@@ -537,3 +537,47 @@ button:disabled {
   outline: 0;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
 }
+/* ==========================================================================
+   Dark Mode Theme
+   ========================================================================== */
+
+body.dark-mode {
+  --primary-color: #4a59c7; /* Un poco más brillante para contraste */
+  --primary-hover-color: #6c7bff;
+  --secondary-color: #15b35a;
+  --secondary-hover-color: #1ce672;
+  
+  --light-color: #1a1a1a; /* Fondo principal oscuro */
+  --dark-color: #e0e0e0;  /* Texto principal claro */
+  --text-color: #d1d1d1; /* Texto secundario un poco más apagado */
+  
+  --border-color: #3a3a3a;
+  --white-color: #252525; /* Color de fondo para tarjetas y formularios */
+
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Ajustes específicos para modo oscuro */
+body.dark-mode .scan-controls .scan-path-input {
+  background-color: #333;
+  color: var(--text-color);
+}
+
+body.dark-mode .no-content-message {
+  background-color: #2a2a2a;
+  border-color: var(--border-color);
+}
+
+body.dark-mode .content-table tbody tr:hover {
+  background-color: #303030;
+}
+
+body.dark-mode .content-table th {
+  background-color: #2c2c2c;
+}
+
+body.dark-mode .form-column-right {
+  background-color: #202020;
+  border-color: var(--border-color);
+}

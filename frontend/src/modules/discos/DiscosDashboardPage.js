@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { DiscoContext } from './DiscoContext';
 import DiscoCard from './DiscoCard';
+import ThemeSwitch from './ThemeSwitch'; // Importar el interruptor de tema
 import './Discos.css';
 
 const DiscosDashboardPage = () => {
@@ -64,7 +65,10 @@ const DiscosDashboardPage = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Dashboard de Discos</h1>
-        <Link to="/discos/new" className="btn btn-primary">Añadir Disco</Link>
+        <div className="header-actions">
+          <ThemeSwitch />
+          <Link to="/discos/new" className="btn btn-primary">Añadir Disco</Link>
+        </div>
       </div>
 
       <div className="filters-container">
