@@ -476,3 +476,64 @@ button:disabled {
   font-size: 1.2rem;
   color: var(--secondary-color);
 }
+
+/* ==========================================================================
+   Manual Content Editing Styles
+   ========================================================================== */
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.content-header h3 {
+  margin: 0;
+}
+
+.add-content-button {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.add-content-button:hover {
+  background-color: var(--primary-hover-color);
+}
+
+.remove-content-button {
+  background-color: var(--danger-color);
+  color: var(--white-color);
+  border: none;
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background-color 0.2s;
+}
+
+.remove-content-button:hover {
+  background-color: var(--danger-hover-color);
+}
+
+/* Ajustes para los inputs dentro de la tabla */
+.content-table td input {
+  width: 100%;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+}
+
+.content-table td input:focus {
+  border-color: var(--primary-color);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}

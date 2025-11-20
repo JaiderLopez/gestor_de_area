@@ -60,6 +60,24 @@ const DiscoForm = ({ disco, onSave }) => {
     }));
   };
 
+  const addContentRow = () => {
+    setFormData(prevData => ({
+      ...prevData,
+      contenidos: [
+        ...prevData.contenidos,
+        { nombre: '', fecha_modificacion: new Date().toISOString().slice(0, 10), peso_gb: '0.0' }
+      ]
+    }));
+  };
+
+  const removeContentRow = (index) => {
+    const newContenidos = formData.contenidos.filter((_, i) => i !== index);
+    setFormData(prevData => ({
+      ...prevData,
+      contenidos: newContenidos,
+    }));
+  };
+
   const handleFileSelect = (e) => {
     const files = e.target.files;
     if (files.length > 0) {
@@ -196,7 +214,12 @@ const DiscoForm = ({ disco, onSave }) => {
 
           {/* Columna Derecha */}
           <div className="form-column form-column-right">
-            <h3>Contenido del Disco</h3>
+            <div className="content-header">
+              <h3>Contenido del Disco</h3>
+              <button type="button" onClick={addContentRow} className="add-content-button">
+                Añadir Fila
+              </button>
+            </div>
             {formData.contenidos.length > 0 ? (
               <div className="content-table-container">
                 <table className="content-table">
@@ -205,20 +228,40 @@ const DiscoForm = ({ disco, onSave }) => {
                       <th>Nombre</th>
                       <th>Fecha Modificación</th>
                       <th>Peso (GB)</th>
+                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
                     {formData.contenidos.map((item, index) => (
                       <tr key={index}>
-                        <td>{item.nombre}</td>
-                        <td>{item.fecha_modificacion}</td>
+                        <td>
+                          <input
+                            type="text"
+                            value={item.nombre}
+                            onChange={(e) => handleContentChange(index, 'nombre', e.target.value)}
+                            placeholder="Nombre del contenido"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="date"
+                            value={item.fecha_modificacion}
+                            onChange={(e) => handleContentChange(index, 'fecha_modificacion', e.target.value)}
+                          />
+                        </td>
                         <td>
                           <input
                             type="number"
+                            step="0.01"
                             value={item.peso_gb}
                             onChange={(e) => handleContentChange(index, 'peso_gb', e.target.value)}
                             className="content-weight-input"
                           />
+                        </td>
+                        <td>
+                          <button type="button" onClick={() => removeContentRow(index)} className="remove-content-button">
+                            Eliminar
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -227,8 +270,8 @@ const DiscoForm = ({ disco, onSave }) => {
               </div>
             ) : (
               <div className="no-content-message">
-                <p>Aún no se ha escaneado contenido.</p>
-                <p>Seleccione una carpeta y haga clic en "Escanear" para poblar esta sección.</p>
+                <p>Aún no se ha añadido contenido.</p>
+                <p>Haga clic en "Añadir Fila" para agregar contenido manualmente o escanee una carpeta.</p>
               </div>
             )}
           </div>

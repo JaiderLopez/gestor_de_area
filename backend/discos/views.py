@@ -1,6 +1,5 @@
 import os
 import shutil
-import ctypes
 from datetime import datetime
 
 from rest_framework import viewsets, filters, status
@@ -11,39 +10,6 @@ import django_filters.rest_framework
 from .models import Disco, ContenidoDisco
 from .serializers import DiscoSerializer, ContenidoDiscoSerializer
 from .filters import DiscoFilter
-
-
-def get_windows_volume_info(path):
-    """
-    Obtiene el tamaño total y la etiqueta de un volumen en Windows usando ctypes.
-    """
-    if not isinstance(path, str):
-        return None, None
-
-    # Asegurarse de que la ruta sea la raíz de la unidad (ej: "C:\\")
-    drive_root = os.path.splitdrive(path)[0] + os.path.sep
-    
-    # Para el nombre del volumen
-    volume_name_buffer = ctypes.create_unicode_buffer(1024)
-    ctypes.windll.kernel32.GetVolumeInformationW(
-        ctypes.c_wchar_p(drive_root),
-        volume_name_buffer,
-        ctypes.sizeof(volume_name_buffer),
-        None, None, None, None, 0
-    )
-    volume_name = volume_name_buffer.value
-
-    # Para el tamaño del disco
-    total_bytes = ctypes.c_ulonglong(0)
-    ctypes.windll.kernel32.GetDiskFreeSpaceExW(
-        ctypes.c_wchar_p(drive_root),
-        None,
-        ctypes.pointer(total_bytes),
-        None
-    )
-    size_gb = round(total_bytes.value / (1024**3), 2)
-
-    return volume_name, size_gb
 
 
 class DiscoViewSet(viewsets.ModelViewSet):
@@ -81,23 +47,16 @@ class DiscoScanView(APIView):
                 status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            suggested_name = ""
-            suggested_size_gb = 0
-
-            if os.name == 'nt':
-                # Usar el método de Windows para mayor precisión
-                name, size = get_windows_volume_info(path_to_scan)
-                suggested_name = name or os.path.basename(os.path.normpath(path_to_scan))
-                suggested_size_gb = size
-            else:
-                # Método de respaldo para otros SO
-                total_size_bytes = shutil.disk_usage(path_to_scan).total
-                suggested_size_gb = round(total_size_bytes / (1024**3), 2)
-                suggested_name = os.path.basename(os.path.normpath(path_to_scan))
-                if not suggested_name:
-                    suggested_name = path_to_scan.replace(os.path.sep, '')
+            # El nombre sugerido se sigue calculando a partir de la ruta
+            suggested_name = os.path.basename(os.path.normpath(path_to_scan))
+            if not suggested_name: # Caso para raíces de unidades como 'C:\'
+                suggested_name = path_to_scan.replace(os.path.sep, '')
+            
+            # El tamaño del disco ya no se calcula automáticamente, se establece en 0.
+            suggested_size_gb = 0.0
 
             scanned_contents_data = []
+            # Se mantiene el escaneo del contenido del directorio
             for item_name in os.listdir(path_to_scan):
                 if item_name.startswith('.') or item_name.startswith('$'):
                     continue
