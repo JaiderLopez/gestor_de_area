@@ -3,8 +3,8 @@ const API_BASE_URL = 'http://localhost:8000/api';
 const request = async (url, options = {}) => {
   const response = await fetch(url, options);
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Error en la petición' }));
-    throw new Error(error.message || 'Error en la petición');
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || errorData.message || 'Error en la petición');
   }
   // Handle 204 No Content response
   if (response.status === 204) {

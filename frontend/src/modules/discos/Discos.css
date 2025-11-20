@@ -369,8 +369,87 @@ button:disabled {
 }
 
 /* ==========================================================================
-   Message & Status Styles
+   New Two-Column Form Layout
    ========================================================================== */
+
+.form-container-split {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  min-height: calc(100vh - 4rem); /* Ocupa la altura de la pantalla menos el padding */
+  box-sizing: border-box;
+}
+
+.disco-form {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-columns {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  flex-grow: 1; /* Permite que las columnas crezcan para llenar el espacio */
+}
+
+.form-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-column-left {
+  flex: 1;
+}
+
+.form-column-right {
+  flex: 1;
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.content-table-container {
+  max-height: 400px; /* Altura máxima antes de que aparezca el scroll */
+  overflow-y: auto; /* Scroll vertical automático */
+  border-top: 1px solid var(--border-color);
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.no-content-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: var(--secondary-color);
+  background-color: #fdfdfe;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+}
+
+.save-button {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  background-color: var(--success-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.save-button:hover {
+  background-color: var(--secondary-hover-color);
+}
+
 
 .message {
   padding: 1rem;

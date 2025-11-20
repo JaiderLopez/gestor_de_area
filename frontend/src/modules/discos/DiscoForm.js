@@ -86,9 +86,11 @@ const DiscoForm = ({ disco, onSave }) => {
       const data = await scanDisco(scanPath);
       setFormData(prevData => ({
         ...prevData,
-        contenidos: data,
+        contenidos: data.contenidos,
+        nombre: data.nombre_sugerido || prevData.nombre,
+        tamanio_gb: data.tamanio_gb_sugerido || prevData.tamanio_gb,
       }));
-      setMessage({ type: 'success', text: 'Escaneo completado con éxito.' });
+      setMessage({ type: 'success', text: 'Escaneo completado. Nombre y tamaño sugeridos han sido rellenados.' });
     } catch (error) {
       setMessage({ type: 'error', text: `Error al escanear: ${error.message}` });
     } finally {
@@ -113,111 +115,130 @@ const DiscoForm = ({ disco, onSave }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="disco-form">
-      {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
-      
-      <label htmlFor="nombre">Nombre del Disco</label>
-      <input
-        id="nombre"
-        type="text"
-        name="nombre"
-        value={formData.nombre}
-        onChange={handleChange}
-        placeholder="Nombre del disco"
-        className={errors.nombre ? 'input-error' : ''}
-      />
-      {errors.nombre && <span className="error-text">{errors.nombre}</span>}
+    <div className="form-container-split">
+      <form onSubmit={handleSubmit} className="disco-form">
+        {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
+        
+        <div className="form-columns">
+          {/* Columna Izquierda */}
+          <div className="form-column form-column-left">
+            <label htmlFor="nombre">Nombre del Disco</label>
+            <input
+              id="nombre"
+              type="text"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              placeholder="Nombre del disco"
+              className={errors.nombre ? 'input-error' : ''}
+            />
+            {errors.nombre && <span className="error-text">{errors.nombre}</span>}
 
-      <label htmlFor="tipo">Tipo de Disco</label>
-      <select
-        id="tipo"
-        name="tipo"
-        value={formData.tipo}
-        onChange={handleChange}
-      >
-        <option value="HDD">HDD</option>
-        <option value="SSD">SSD</option>
-        <option value="CD/DVD">CD/DVD</option>
-      </select>
+            <label htmlFor="tipo">Tipo de Disco</label>
+            <select
+              id="tipo"
+              name="tipo"
+              value={formData.tipo}
+              onChange={handleChange}
+            >
+              <option value="HDD">HDD</option>
+              <option value="SSD">SSD</option>
+              <option value="CD/DVD">CD/DVD</option>
+            </select>
 
-      <label htmlFor="tamanio_gb">Tamaño (GB)</label>
-      <input
-        id="tamanio_gb"
-        type="number"
-        name="tamanio_gb"
-        value={formData.tamanio_gb}
-        onChange={handleChange}
-        placeholder="Tamaño (GB)"
-        className={errors.tamanio_gb ? 'input-error' : ''}
-      />
-      {errors.tamanio_gb && <span className="error-text">{errors.tamanio_gb}</span>}
+            <label htmlFor="tamanio_gb">Tamaño (GB)</label>
+            <input
+              id="tamanio_gb"
+              type="number"
+              name="tamanio_gb"
+              value={formData.tamanio_gb}
+              onChange={handleChange}
+              placeholder="Tamaño (GB)"
+              className={errors.tamanio_gb ? 'input-error' : ''}
+            />
+            {errors.tamanio_gb && <span className="error-text">{errors.tamanio_gb}</span>}
 
-      <label htmlFor="descripcion">Descripción</label>
-      <textarea
-        id="descripcion"
-        name="descripcion"
-        value={formData.descripcion}
-        onChange={handleChange}
-        placeholder="Descripción"
-      />
+            <label htmlFor="descripcion">Descripción</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              value={formData.descripcion}
+              onChange={handleChange}
+              placeholder="Descripción"
+            />
 
-      <div className="scan-section">
-        <h3>Escanear Contenido</h3>
-        <div className="scan-controls">
-          <input
-            type="file"
-            webkitdirectory="true"
-            ref={fileInputRef}
-            onChange={handleFileSelect}
-            style={{ display: 'none' }}
-          />
-          <input
-            type="text"
-            value={scanPath}
-            placeholder="Ninguna carpeta seleccionada"
-            readOnly
-            className="scan-path-input"
-          />
-          <button type="button" onClick={handleSelectFolderClick} disabled={scanLoading}>
-            Seleccionar Carpeta
-          </button>
-          <button type="button" onClick={handleScan} disabled={scanLoading || !scanPath}>
-            {scanLoading ? 'Escaneando...' : 'Escanear'}
-          </button>
+            <div className="scan-section">
+              <h3>Escanear Contenido</h3>
+              <div className="scan-controls">
+                <input
+                  type="file"
+                  webkitdirectory="true"
+                  ref={fileInputRef}
+                  onChange={handleFileSelect}
+                  style={{ display: 'none' }}
+                />
+                <input
+                  type="text"
+                  value={scanPath}
+                  placeholder="Ninguna carpeta seleccionada"
+                  readOnly
+                  className="scan-path-input"
+                />
+                <button type="button" onClick={handleSelectFolderClick} disabled={scanLoading}>
+                  Seleccionar Carpeta
+                </button>
+                <button type="button" onClick={handleScan} disabled={scanLoading || !scanPath}>
+                  {scanLoading ? 'Escaneando...' : 'Escanear'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Columna Derecha */}
+          <div className="form-column form-column-right">
+            <h3>Contenido del Disco</h3>
+            {formData.contenidos.length > 0 ? (
+              <div className="content-table-container">
+                <table className="content-table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Fecha Modificación</th>
+                      <th>Peso (GB)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formData.contenidos.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.nombre}</td>
+                        <td>{item.fecha_modificacion}</td>
+                        <td>
+                          <input
+                            type="number"
+                            value={item.peso_gb}
+                            onChange={(e) => handleContentChange(index, 'peso_gb', e.target.value)}
+                            className="content-weight-input"
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="no-content-message">
+                <p>Aún no se ha escaneado contenido.</p>
+                <p>Seleccione una carpeta y haga clic en "Escanear" para poblar esta sección.</p>
+              </div>
+            )}
+          </div>
         </div>
-        {formData.contenidos.length > 0 && (
-          <table className="content-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Fecha Modificación</th>
-                <th>Peso (GB)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {formData.contenidos.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.nombre}</td>
-                  <td>{item.fecha_modificacion}</td>
-                  <td>
-                    <input
-                      type="number"
-                      value={item.peso_gb}
-                      onChange={(e) => handleContentChange(index, 'peso_gb', e.target.value)}
-                      className="content-weight-input"
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
 
-      <button type="submit" disabled={loading}>
-        {loading ? 'Guardando...' : 'Guardar'}
-      </button>
-    </form>
+        <button type="submit" disabled={loading} className="save-button">
+          {loading ? 'Guardando...' : 'Guardar Disco'}
+        </button>
+      </form>
+    </div>
   );
 };
 
