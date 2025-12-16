@@ -1,0 +1,44 @@
+/* Reuse general dashboard styles, add specific badges */
+
+.priority-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.priority-alta {
+    background-color: #ffe2e5;
+    color: #f64e60;
+}
+
+.priority-media {
+    background-color: #fff4de;
+    color: #ffa800;
+}
+
+.priority-baja {
+    background-color: #e1f0ff;
+    color: #3699ff;
+}
+
+.status-pendiente {
+    background-color: #fff4de;
+    color: #ffa800;
+}
+
+.status-en-proceso {
+    background-color: #c9f7f5;
+    color: #1bc5bd;
+}
+
+.status-finalizado {
+    background-color: #e8fff3;
+    color: #50cd89;
+}
+
+.status-cancelado {
+    background-color: #f3f6f9;
+    color: #b5b5c3;
+}

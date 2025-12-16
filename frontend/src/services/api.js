@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 const request = async (url, options = {}) => {
   const response = await fetch(url, options);
@@ -49,4 +49,72 @@ export const scanDisco = (path) => {
   return request(url.toString(), {
     method: 'GET',
   });
+};
+
+// --- Inventario Services ---
+
+export const getDispositivos = (url) => {
+  return request(url);
+};
+
+export const getCategorias = () => {
+  return request(`${API_BASE_URL}/inventario/categorias/`);
+};
+
+export const createDispositivo = (data) => {
+  return request(`${API_BASE_URL}/inventario/dispositivos/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+export const updateDispositivo = (id, data) => {
+  return request(`${API_BASE_URL}/inventario/dispositivos/${id}/`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+export const getMovimientos = (url) => {
+  return request(url);
+};
+
+export const getHistorial = (id) => {
+  return request(`${API_BASE_URL}/inventario/dispositivos/${id}/historial/`);
+};
+
+export const createMovimiento = (data) => {
+  return request(`${API_BASE_URL}/inventario/movimientos/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+// --- Mantenimiento Services ---
+
+export const getMantenimientos = (url) => {
+  return request(url);
+};
+
+export const createMantenimiento = (data) => {
+  return request(`${API_BASE_URL}/mantenimiento/mantenimientos/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+export const updateMantenimiento = (id, data) => {
+  return request(`${API_BASE_URL}/mantenimiento/mantenimientos/${id}/`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+export const getDashboardStats = () => {
+  return request(`${API_BASE_URL}/dashboard/stats/`);
 };

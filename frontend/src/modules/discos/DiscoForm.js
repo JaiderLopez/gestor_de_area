@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { scanDisco } from '../../services/api';
 import './Discos.css'; // Importar el CSS
 
-const DiscoForm = ({ disco, onSave }) => {
+const DiscoForm = ({ disco, onSave, onSuccess }) => {
   const [formData, setFormData] = useState({
     nombre: '',
     tipo: 'HDD',
@@ -123,9 +123,15 @@ const DiscoForm = ({ disco, onSave }) => {
     setLoading(true);
     setMessage({ type: '', text: '' });
     try {
-      await onSave(formData);
+      const savedDisco = await onSave(formData);
       setMessage({ type: 'success', text: 'Disco guardado con éxito.' });
-      setTimeout(() => navigate('/discos'), 1500);
+
+      if (onSuccess) {
+        onSuccess(savedDisco);
+      } else {
+        // Fallback if not using in modal
+        setTimeout(() => navigate('/discos'), 1500);
+      }
     } catch (error) {
       setMessage({ type: 'error', text: `Error al guardar: ${error.message}` });
       setLoading(false);
@@ -136,7 +142,7 @@ const DiscoForm = ({ disco, onSave }) => {
     <div className="form-container-split">
       <form onSubmit={handleSubmit} className="disco-form">
         {message.text && <div className={`message ${message.type}`}>{message.text}</div>}
-        
+
         <div className="form-columns">
           {/* Columna Izquierda */}
           <div className="form-column form-column-left">

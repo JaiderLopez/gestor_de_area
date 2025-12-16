@@ -2,19 +2,21 @@ import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { DiscoContext } from './DiscoContext';
 import DiscoCard from './DiscoCard';
-import ThemeSwitch from './ThemeSwitch'; // Importar el interruptor de tema
+import DiscoForm from './DiscoForm';
+import Modal from '../../components/common/Modal';
 import './Discos.css';
 
 const DiscosDashboardPage = () => {
-  const { discos, loading, error, nextPage, fetchDiscos } = useContext(DiscoContext);
-  
+  const { discos, loading, error, nextPage, fetchDiscos, addDisco, updateDisco } = useContext(DiscoContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingDisco, setEditingDisco] = useState(null);
+
   const [filters, setFilters] = useState({
     search: '',
     tipo: '',
     contenido_fecha_desde: '',
     contenido_fecha_hasta: '',
     espacio_libre_min: '',
-    espacio_libre_max: '',
   });
 
   const applyFilters = useCallback((isNewQuery = true) => {
@@ -24,15 +26,14 @@ const DiscosDashboardPage = () => {
     if (filters.contenido_fecha_desde) params.append('contenido_fecha_desde', filters.contenido_fecha_desde);
     if (filters.contenido_fecha_hasta) params.append('contenido_fecha_hasta', filters.contenido_fecha_hasta);
     if (filters.espacio_libre_min) params.append('espacio_libre_min', filters.espacio_libre_min);
-    if (filters.espacio_libre_max) params.append('espacio_libre_max', filters.espacio_libre_max);
-    
-    const url = `http://localhost:8000/api/discos/?${params.toString()}`;
+
+    const url = `http://127.0.0.1:8000/api/discos/?${params.toString()}`;
     fetchDiscos(url, isNewQuery);
   }, [filters, fetchDiscos]);
 
   useEffect(() => {
     applyFilters(true);
-  }, []); // Solo se ejecuta al montar el componente
+  }, [applyFilters]);
 
   const handleLoadMore = () => {
     if (nextPage) {
@@ -56,82 +57,129 @@ const DiscosDashboardPage = () => {
       contenido_fecha_desde: '',
       contenido_fecha_hasta: '',
       espacio_libre_min: '',
-      espacio_libre_max: '',
     });
-    fetchDiscos('http://localhost:8000/api/discos/', true);
+    // Reset to default
+    const url = `http://127.0.0.1:8000/api/discos/`;
+    fetchDiscos(url, true);
+  };
+
+  // Modal Handlers
+  const handleOpenCreateModal = (e) => {
+    if (e) e.preventDefault();
+    setEditingDisco(null); // Reset editing state
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditModal = (disco) => {
+    setEditingDisco(disco);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingDisco(null);
+  };
+
+  const handleSaveDisco = async (formData) => {
+    if (editingDisco) {
+      return await updateDisco(editingDisco.id, formData);
+    } else {
+      return await addDisco(formData);
+    }
+  };
+
+  const handleModalSuccess = () => {
+    handleCloseModal();
+    // Refresh list if needed, or rely on Context
+    applyFilters(true); // Refetch to look fresh
   };
 
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Dashboard de Discos</h1>
-        <div className="header-actions">
-          <ThemeSwitch />
-          <Link to="/discos/new" className="btn btn-primary">Añadir Disco</Link>
+        <h1>Gestor de Discos</h1>
+        <button onClick={handleOpenCreateModal} className="btn btn-primary">
+          + Nuevo Disco
+        </button>
+      </div>
+
+      <div className="filters-bar">
+        <div className="filter-group" style={{ flex: 2 }}>
+          <input
+            type="text"
+            name="search"
+            className="filter-input"
+            value={filters.search}
+            onChange={handleFilterChange}
+            placeholder="🔍 Buscar disco..."
+          />
+        </div>
+
+        <div className="filter-group">
+          <select name="tipo" value={filters.tipo} onChange={handleFilterChange} className="filter-select">
+            <option value="">Tipo: Todos</option>
+            <option value="HDD">HDD</option>
+            <option value="SSD">SSD</option>
+            <option value="CD/DVD">CD/DVD</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <input
+            type="number"
+            name="espacio_libre_min"
+            value={filters.espacio_libre_min}
+            onChange={handleFilterChange}
+            placeholder="Min Libre (GB)"
+            className="filter-input"
+          />
+        </div>
+
+        <div className="filter-group" style={{ flex: '0 0 auto' }}>
+          <button onClick={handleSearch} className="btn-search">Filtrar</button>
+          <button onClick={handleClear} className="btn-clear">Limpiar</button>
         </div>
       </div>
 
-      <div className="filters-container">
-        <input
-          type="text"
-          name="search"
-          value={filters.search}
-          onChange={handleFilterChange}
-          placeholder="Buscar por nombre, contenido..."
-        />
-        <select name="tipo" value={filters.tipo} onChange={handleFilterChange}>
-          <option value="">Tipo: Todos</option>
-          <option value="HDD">HDD</option>
-          <option value="SSD">SSD</option>
-          <option value="CD/DVD">CD/DVD</option>
-        </select>
-        <input
-          type="date"
-          name="contenido_fecha_desde"
-          value={filters.contenido_fecha_desde}
-          onChange={handleFilterChange}
-          title="Fecha de contenido (desde)"
-        />
-        <input
-          type="date"
-          name="contenido_fecha_hasta"
-          value={filters.contenido_fecha_hasta}
-          onChange={handleFilterChange}
-          title="Fecha de contenido (hasta)"
-        />
-        <input
-          type="number"
-          name="espacio_libre_min"
-          value={filters.espacio_libre_min}
-          onChange={handleFilterChange}
-          placeholder="Espacio libre mín. (GB)"
-        />
-        <input
-          type="number"
-          name="espacio_libre_max"
-          value={filters.espacio_libre_max}
-          onChange={handleFilterChange}
-          placeholder="Espacio libre máx. (GB)"
-        />
-        <button onClick={handleSearch}>Buscar</button>
-        <button onClick={handleClear} className="btn-secondary">Limpiar</button>
-      </div>
+      {error && <p className="error-message">Error de conexión: {error}</p>}
 
-      {error && <p className="error-message">Error: {error}</p>}
-      
       <div className="dashboard-grid">
         {discos.map(disco => (
-          <DiscoCard key={disco.id} disco={disco} />
+          <DiscoCard
+            key={disco.id}
+            disco={disco}
+            onEdit={handleOpenEditModal}
+          />
         ))}
       </div>
 
-      {loading && <p className="loading-message">Cargando...</p>}
-      
+      {loading && <p className="loading-message">Cargando discos...</p>}
+
+      {!loading && discos.length === 0 && !error && (
+        <div className="no-content-message">
+          <p>No se encontraron discos con los filtros actuales.</p>
+        </div>
+      )}
+
       {nextPage && !loading && (
         <div className="load-more-container">
           <button onClick={handleLoadMore} className="load-more-button">Cargar más</button>
         </div>
       )}
+
+      {/* Modal for Creating/Editing Disco */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={editingDisco ? "Editar Disco" : "Crear Nuevo Disco"}
+        size="xlarge"
+      >
+        <DiscoForm
+          disco={editingDisco} // Pass default values if editing
+          onSave={handleSaveDisco} // Unified save handler
+          onSuccess={handleModalSuccess}
+        />
+      </Modal>
     </div>
   );
 };

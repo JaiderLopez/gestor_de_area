@@ -1,23 +1,40 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { DiscoContext } from './DiscoContext'; // Import DiscoContext
+
+import { DiscoContext } from './DiscoContext';
 import './Discos.css';
 
-const DiscoCard = ({ disco }) => {
-  const { deleteDisco } = useContext(DiscoContext); // Get deleteDisco from context
+const DiscoCard = ({ disco, onEdit }) => {
+  const { deleteDisco } = useContext(DiscoContext);
   const [isDeleting, setIsDeleting] = useState(false);
-  const contenidosToShow = disco.contenidos?.slice(0, 5) || [];
-  const remainingCount = disco.contenidos ? disco.contenidos.length - contenidosToShow.length : 0;
+
+  const contenidosToShow = disco.contenidos?.slice(0, 3) || [];
+  const remainingCount = disco.porcentaje_ocupado >= 0
+    ? disco.contenidos.length - contenidosToShow.length
+    : 0;
+
+  // Clases dinámicas según porcentaje
+  const getStatusClass = (percent) => {
+    if (percent >= 80) return 'status-danger';
+    if (percent >= 50) return 'status-warning';
+    return 'status-safe';
+  };
+
+  const getFillClass = (percent) => {
+    if (percent >= 80) return 'fill-danger';
+    if (percent >= 50) return 'fill-warning';
+    return 'fill-safe';
+  };
+
+  const statusClass = getStatusClass(disco.porcentaje_ocupado);
+  const fillClass = getFillClass(disco.porcentaje_ocupado);
 
   const handleDelete = async () => {
-    if (window.confirm(`¿Estás seguro de que quieres eliminar el disco "${disco.nombre}"?`)) {
+    if (window.confirm(`¿Estás seguro de que quieres eliminar el disco DISCO "${disco.nombre}"?`)) {
       setIsDeleting(true);
       try {
         await deleteDisco(disco.id);
-        // No need to update local state, context will handle it
-        alert('Disco eliminado con éxito.');
       } catch (error) {
-        alert(`Error al eliminar el disco: ${error.message}`);
+        alert(`Error: ${error.message}`);
       } finally {
         setIsDeleting(false);
       }
@@ -25,32 +42,59 @@ const DiscoCard = ({ disco }) => {
   };
 
   return (
-    <div className="disco-card">
+    <div className={`disco-card ${statusClass}`}>
       <div className="card-header">
-        <h3>{disco.nombre}</h3>
-        <div className="card-actions">
-          <Link to={`/discos/${disco.id}/edit`}>Editar</Link>
-          <button onClick={handleDelete} disabled={isDeleting} className="btn-delete">
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
-          </button>
+        <div className="card-title-group">
+          <h3>{disco.nombre}</h3>
+          <span className="card-subtitle">{disco.tamanio_gb} GB Totales</span>
+        </div>
+        <span className="card-type-badge">{disco.tipo}</span>
+      </div>
+
+      <div className="usage-stats">
+        <div className="progress-labels">
+          <span>Usado: {disco.espacio_usado ? disco.espacio_usado.toFixed(2) : 0} GB</span>
+          <span>{disco.porcentaje_ocupado}%</span>
+        </div>
+        <div className="progress-bar-bg">
+          <div
+            className={`progress-bar-fill ${fillClass}`}
+            style={{ width: `${disco.porcentaje_ocupado}%` }}
+          ></div>
         </div>
       </div>
-      <p><strong>Tipo:</strong> {disco.tipo}</p>
-      <p><strong>Tamaño:</strong> {disco.tamanio_gb} GB</p>
-      
-      {contenidosToShow.length > 0 && (
-        <div className="content-summary">
-          <h4>Contenido:</h4>
-          <ul>
-            {contenidosToShow.map(contenido => (
-              <li key={contenido.id}>{contenido.nombre}</li>
+
+      <div className="content-preview">
+        <h4>Contenido Reciente</h4>
+        {contenidosToShow.length > 0 ? (
+          <ul className="content-list">
+            {contenidosToShow.map(c => (
+              <li key={c.id}>{c.nombre}</li>
             ))}
-            {remainingCount > 0 && (
-              <li className="remaining-count">... y {remainingCount} más.</li>
-            )}
+            {remainingCount > 0 && <li>... y {remainingCount} más</li>}
           </ul>
-        </div>
-      )}
+        ) : (
+          <p style={{ fontSize: '0.9rem', color: '#b5b5c3' }}>Sin contenido indexado</p>
+        )}
+      </div>
+
+      <div className="card-actions">
+        <button
+          onClick={() => onEdit(disco)}
+          className="btn-icon-action"
+          title="Editar"
+        >
+          ✎
+        </button>
+        <button
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="btn-icon-action delete"
+          title="Eliminar"
+        >
+          🗑
+        </button>
+      </div>
     </div>
   );
 };

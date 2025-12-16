@@ -1,220 +1,75 @@
 /* ==========================================================================
-   Global Styles & Variables
+   Global Styles & Variables (Modern & Neon)
    ========================================================================== */
 
 :root {
-  --primary-color: #262e75;
-  --primary-hover-color: #1a2057; /* Un poco más oscuro para el hover */
-  --secondary-color: #0da049;
-  --secondary-hover-color: #0a8039; /* Un poco más oscuro para el hover */
-  --danger-color: #dc3545;
-  --danger-hover-color: #c82333;
-  --success-color: #0da049;
-  --light-color: #f0f2f5; /* Un fondo gris muy claro para contraste */
-  --dark-color: #2b2b2b;
-  --text-color: #2b2b2b;
-  --border-color: #dee2e6;
-  --white-color: #ffffff;
-  --shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.12);
-  --border-radius: 0.375rem;
+  /* Colors - Modern Dark/Neon Palette */
+  --bg-color: #f4f6f8;
+  /* Very light cool grey for light mode */
+  --card-bg: #ffffff;
+  --text-main: #2b2f3e;
+  --text-secondary: #7e8299;
+
+  --primary: #3699ff;
+  /* Bright Blue */
+  --primary-glow: rgba(54, 153, 255, 0.4);
+
+  --success: #0bb783;
+  /* Neon Green */
+  --success-glow: rgba(11, 183, 131, 0.4);
+
+  --warning: #ffa800;
+  /* Neon Yellow/Orange */
+  --warning-glow: rgba(255, 168, 0, 0.4);
+
+  --danger: #f64e60;
+  /* Neon Red */
+  --danger-glow: rgba(246, 78, 96, 0.4);
+
+  --border-radius: 12px;
+  --shadow-sm: 0 0 20px 0 rgba(76, 87, 125, 0.02);
+  --shadow-md: 0 0 25px 0 rgba(76, 87, 125, 0.1);
+  --transition: all 0.3s ease;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--light-color);
-  color: var(--text-color);
-  margin: 0;
-  padding: 2rem;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: var(--dark-color);
-  font-weight: 600;
-}
-
-a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.2s ease-in-out;
-}
-
-a:hover {
-  color: var(--primary-hover-color);
-  text-decoration: underline;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
 }
 
 /* ==========================================================================
-   Button Styles
-   ========================================================================== */
-
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: var(--border-radius);
-  transition: all 0.2s ease-in-out;
-}
-
-.btn-primary {
-  color: var(--white-color);
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.btn-primary:hover {
-  color: var(--white-color);
-  background-color: var(--primary-hover-color);
-  border-color: var(--primary-hover-color);
-  text-decoration: none;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-}
-
-.btn-secondary {
-  color: var(--white-color);
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
-}
-
-.btn-secondary:hover {
-  color: var(--white-color);
-  background-color: var(--secondary-hover-color);
-  border-color: var(--secondary-hover-color);
-  text-decoration: none;
-}
-
-.btn-delete {
-  color: var(--danger-color);
-  background-color: transparent;
-  border: 1px solid var(--danger-color);
-}
-
-.btn-delete:hover {
-  color: var(--white-color);
-  background-color: var(--danger-color);
-  border-color: var(--danger-color);
-  text-decoration: none;
-}
-
-button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-/* ==========================================================================
-   Dashboard & Card Styles
-   ========================================================================== */
-
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.disco-card {
-  background-color: var(--white-color);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-  transition: all 0.2s ease-in-out;
-}
-
-.disco-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 1rem;
-}
-
-.card-header h3 {
-  margin: 0;
-}
-
-.card-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.card-actions a, .card-actions button {
-  font-size: 0.875rem;
-  padding: 0.25rem 0.5rem;
-}
-
-.content-summary ul {
-  padding-left: 1.2rem;
-  margin: 0.5rem 0 0;
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.load-more-container {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-.load-more-button {
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.load-more-button:hover {
-  background-color: var(--primary-hover-color);
-}
-
-/* ==========================================================================
-   Form & Input Styles
+   Form & Input Styles (Modern Dark)
    ========================================================================== */
 
 .disco-form {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: var(--white-color);
-  border: 1px solid var(--border-color);
+  /* Remove default container styles when in modal or page */
+  max-width: 100%;
+}
+
+.form-columns {
+  display: flex;
+  gap: 24px;
+}
+
+.form-column {
+  flex: 1;
+}
+
+.form-column-right {
+  background-color: #1a1a27;
+  /* Darker bg for contrast */
+  padding: 24px;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .disco-form label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: var(--dark-color);
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #b5b5c3;
+  font-size: 0.9rem;
 }
 
 .disco-form input[type="text"],
@@ -222,362 +77,460 @@ button:disabled {
 .disco-form input[type="date"],
 .disco-form select,
 .disco-form textarea {
-  display: block;
   width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--text-color);
-  background-color: var(--white-color);
-  background-clip: padding-box;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  margin-bottom: 1rem;
+  padding: 12px;
+  border: 1px solid #323248;
+  background-color: #1a1a27;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  margin-bottom: 16px;
   box-sizing: border-box;
 }
 
 .disco-form input:focus,
 .disco-form select:focus,
 .disco-form textarea:focus {
-  border-color: var(--primary-color);
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(54, 153, 255, 0.1);
+  outline: none;
 }
 
-.disco-form .input-error {
-  border-color: var(--danger-color);
+.input-error {
+  border-color: var(--danger) !important;
 }
 
-.disco-form .error-text {
-  color: var(--danger-color);
-  font-size: 0.875rem;
-  margin-top: -0.75rem;
-  margin-bottom: 1rem;
+.error-text {
+  color: var(--danger);
+  font-size: 0.8rem;
+  margin-top: -12px;
+  margin-bottom: 12px;
   display: block;
 }
 
-.disco-form button[type="submit"] {
+/* Save Button */
+.save-button {
   width: 100%;
-  padding: 0.75rem;
+  padding: 14px;
   font-size: 1.1rem;
-  background-color: var(--primary-color);
-  color: var(--white-color);
+  font-weight: 600;
+  background-color: var(--success);
+  color: #ffffff;
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   cursor: pointer;
+  margin-top: 24px;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px var(--success-glow);
 }
 
-.disco-form button[type="submit"]:hover {
-  background-color: var(--primary-hover-color);
+.save-button:hover {
+  background-color: #0a8039;
+  transform: translateY(-2px);
 }
 
-/* ==========================================================================
-   Filter & Scan Sections
-   ========================================================================== */
-
-.filters-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: var(--white-color);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  margin-bottom: 2rem;
-  align-items: center;
-}
-
-.filters-container input,
-.filters-container select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-}
-
-.filters-container button {
-  padding: 0.5rem 1rem;
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  border: none;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-}
-
-.filters-container .btn-secondary {
-  background-color: var(--secondary-color);
-}
-
+/* Scan Section */
 .scan-section {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border-color);
+  background-color: #1a1a27;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(54, 153, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.scan-section h3 {
+  margin-top: 0;
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .scan-controls {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  align-items: center;
-}
-
-.scan-controls .scan-path-input {
-  flex-grow: 1;
-  background-color: #e9ecef; /* Un color de fondo para indicar que es de solo lectura */
-  cursor: default;
+  gap: 10px;
 }
 
 .scan-controls button {
-  flex-shrink: 0; /* Evita que los botones se encojan */
+  padding: 0 16px;
+  background-color: #2a2a3c;
+  border: 1px solid #323248;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.scan-controls input {
-  flex-grow: 1;
+.scan-controls button:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
-/* ==========================================================================
-   Table Styles
-   ========================================================================== */
+.scan-path-input {
+  background-color: #212130 !important;
+  color: #7e8299 !important;
+  cursor: not-allowed;
+}
 
+/* Content Table Styles */
 .content-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-.content-table th,
-.content-table td {
-  text-align: left;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .content-table th {
-  background-color: var(--light-color);
-  font-weight: 600;
+  text-align: left;
+  padding: 12px;
+  color: #7e8299;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.content-table tbody tr:hover {
-  background-color: #f1f3f5;
+.content-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
 }
 
-.content-weight-input {
-  width: 80px;
-  padding: 0.25rem;
+.content-table input {
+  margin-bottom: 0 !important;
+  padding: 8px !important;
+  background-color: #212130 !important;
+  border-color: transparent !important;
 }
 
-/* ==========================================================================
-   New Two-Column Form Layout
-   ========================================================================== */
-
-.form-container-split {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  min-height: calc(100vh - 4rem); /* Ocupa la altura de la pantalla menos el padding */
-  box-sizing: border-box;
-}
-
-.disco-form {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-columns {
-  display: flex;
-  gap: 2rem;
-  width: 100%;
-  flex-grow: 1; /* Permite que las columnas crezcan para llenar el espacio */
-}
-
-.form-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-column-left {
-  flex: 1;
-}
-
-.form-column-right {
-  flex: 1;
-  background-color: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  border: 1px solid var(--border-color);
-}
-
-.content-table-container {
-  max-height: 400px; /* Altura máxima antes de que aparezca el scroll */
-  overflow-y: auto; /* Scroll vertical automático */
-  border-top: 1px solid var(--border-color);
-  margin-top: 1rem;
-  padding-top: 1rem;
-}
-
-.no-content-message {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  text-align: center;
-  color: var(--secondary-color);
-  background-color: #fdfdfe;
-  border: 2px dashed var(--border-color);
-  border-radius: var(--border-radius);
-  padding: 2rem;
-}
-
-.save-button {
-  width: 100%;
-  padding: 0.85rem;
-  font-size: 1.2rem;
-  margin-top: 2rem;
-  background-color: var(--success-color);
-  color: var(--white-color);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.save-button:hover {
-  background-color: var(--secondary-hover-color);
-}
-
-
-.message {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: var(--border-radius);
-  text-align: center;
-}
-
-.message.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.message.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.loading-message, .error-message {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: var(--secondary-color);
-}
-
-/* ==========================================================================
-   Manual Content Editing Styles
-   ========================================================================== */
-
-.content-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.content-header h3 {
-  margin: 0;
+.content-table input:focus {
+  background-color: #1a1a27 !important;
+  border-color: var(--primary) !important;
 }
 
 .add-content-button {
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
+  background-color: #2a2a3c;
+  color: var(--primary);
+  border: 1px solid rgba(54, 153, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
+  font-size: 0.85rem;
+  transition: var(--transition);
 }
 
 .add-content-button:hover {
-  background-color: var(--primary-hover-color);
+  background-color: var(--primary);
+  color: #fff;
 }
 
-.remove-content-button {
-  background-color: var(--danger-color);
-  color: var(--white-color);
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background-color 0.2s;
-}
-
-.remove-content-button:hover {
-  background-color: var(--danger-hover-color);
-}
-
-/* Ajustes para los inputs dentro de la tabla */
-.content-table td input {
-  width: 100%;
-  padding: 0.4rem;
-  font-size: 0.9rem;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
-  box-sizing: border-box;
-}
-
-.content-table td input:focus {
-  border-color: var(--primary-color);
-  outline: 0;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
-}
 /* ==========================================================================
-   Dark Mode Theme
+   Dashboard Header & Filters
    ========================================================================== */
 
-body.dark-mode {
-  --primary-color: #4a59c7; /* Un poco más brillante para contraste */
-  --primary-hover-color: #6c7bff;
-  --secondary-color: #15b35a;
-  --secondary-hover-color: #1ce672;
-  
-  --light-color: #1a1a1a; /* Fondo principal oscuro */
-  --dark-color: #e0e0e0;  /* Texto principal claro */
-  --text-color: #d1d1d1; /* Texto secundario un poco más apagado */
-  
-  --border-color: #3a3a3a;
-  --white-color: #252525; /* Color de fondo para tarjetas y formularios */
-
-  --shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-  --shadow-hover: 0 6px 12px rgba(0, 0, 0, 0.35);
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 8px;
 }
 
-/* Ajustes específicos para modo oscuro */
-body.dark-mode .scan-controls .scan-path-input {
-  background-color: #333;
-  color: var(--text-color);
+.dashboard-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #181c32;
 }
 
-body.dark-mode .no-content-message {
-  background-color: #2a2a2a;
-  border-color: var(--border-color);
+.filters-bar {
+  background-color: var(--card-bg);
+  padding: 16px 24px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
-body.dark-mode .content-table tbody tr:hover {
-  background-color: #303030;
+.filter-group {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-width: 200px;
 }
 
-body.dark-mode .content-table th {
-  background-color: #2c2c2c;
+.filter-input,
+.filter-select {
+  padding: 10px 16px;
+  border: 1px solid #e4e6ef;
+  background-color: #f5f8fa;
+  border-radius: 8px;
+  color: #5e6278;
+  font-weight: 500;
+  outline: none;
+  transition: var(--transition);
+  font-size: 0.95rem;
+  width: 100%;
 }
 
-body.dark-mode .form-column-right {
-  background-color: #202020;
-  border-color: var(--border-color);
+.filter-input:focus,
+.filter-select:focus {
+  background-color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(54, 153, 255, 0.1);
+}
+
+.btn-search {
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-search:hover {
+  background-color: #187de4;
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.btn-clear {
+  background-color: #f5f8fa;
+  color: #7e8299;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-clear:hover {
+  background-color: #e4e6ef;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Disco Card (The Main Event)
+   ========================================================================== */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.disco-card {
+  background-color: var(--card-bg);
+  /* Dark dark background */
+  border-radius: var(--border-radius);
+  padding: 24px;
+  position: relative;
+  transition: var(--transition);
+  border: 1px solid transparent;
+  /* Placeholder for neon */
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Neon Variants --- */
+.disco-card.status-safe {
+  border-color: rgba(11, 183, 131, 0.3);
+  box-shadow: 0 0 15px var(--success-glow);
+}
+
+.disco-card.status-warning {
+  border-color: rgba(255, 168, 0, 0.3);
+  box-shadow: 0 0 15px var(--warning-glow);
+}
+
+.disco-card.status-danger {
+  border-color: rgba(246, 78, 96, 0.3);
+  box-shadow: 0 0 15px var(--danger-glow);
+}
+
+.disco-card:hover {
+  transform: translateY(-5px);
+}
+
+.disco-card.status-safe:hover {
+  box-shadow: 0 0 25px var(--success-glow);
+}
+
+.disco-card.status-warning:hover {
+  box-shadow: 0 0 25px var(--warning-glow);
+}
+
+.disco-card.status-danger:hover {
+  box-shadow: 0 0 25px var(--danger-glow);
+}
+
+/* Card Content */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 15px;
+}
+
+.card-title-group h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #181c32;
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: #b5b5c3;
+  margin-top: 4px;
+  display: block;
+  font-weight: 500;
+}
+
+.card-type-badge {
+  padding: 4px 10px;
+  background-color: #f3f6f9;
+  color: #7e8299;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Progress Bar */
+.usage-stats {
+  margin-bottom: 20px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #7e8299;
+  margin-bottom: 8px;
+}
+
+.progress-bar-bg {
+  height: 8px;
+  background-color: #ebedf3;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Fill Colors */
+.fill-safe {
+  background-color: var(--success);
+  box-shadow: 0 0 10px var(--success-glow);
+}
+
+.fill-warning {
+  background-color: var(--warning);
+  box-shadow: 0 0 10px var(--warning-glow);
+}
+
+.fill-danger {
+  background-color: var(--danger);
+  box-shadow: 0 0 10px var(--danger-glow);
+}
+
+/* Content List */
+.content-preview {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 12px;
+  flex: 1;
+  /* Pushes footer down */
+}
+
+.content-preview h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #a1a5b7;
+  letter-spacing: 0.5px;
+}
+
+.content-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.content-list li {
+  margin-bottom: 6px;
+  color: #5e6278;
+  display: flex;
+  align-items: center;
+}
+
+.content-list li::before {
+  content: "•";
+  color: #d8d8d8;
+  margin-right: 8px;
+}
+
+/* Card Actions */
+.card-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-icon-action {
+  background: transparent;
+  border: 1px solid #e4e6ef;
+  color: #7e8299;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-icon-action:hover {
+  background-color: #f5f8fa;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-icon-action.delete:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background-color: #fff5f8;
+}
+
+/* ==========================================================================
+   Btn Primary Global Override
+   ========================================================================== */
+.btn-primary {
+  background-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(54, 153, 255, 0.3);
+  border: none;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #187de4;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(54, 153, 255, 0.4);
 }

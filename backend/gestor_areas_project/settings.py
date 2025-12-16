@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-temporary-key-placeholder'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.101.72']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'inventario',
     'reportes',
     'mantenimiento',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -140,4 +141,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", # Assuming React runs on port 3000
     "http://127.0.0.1:3000",
+    "http://192.168.101.72:3000",
 ]
