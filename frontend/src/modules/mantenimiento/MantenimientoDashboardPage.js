@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { MantenimientoContext } from './MantenimientoContext';
 import Modal from '../../components/common/Modal';
 import MantenimientoForm from './MantenimientoForm';
+import { API_BASE_URL } from '../../services/api';
 import './Mantenimiento.css';
 
 const MantenimientoDashboardPage = () => {
@@ -22,7 +23,7 @@ const MantenimientoDashboardPage = () => {
         // Default ordering
         params.append('ordering', 'fecha_programada');
 
-        return `http://127.0.0.1:8000/api/mantenimiento/mantenimientos/?${params.toString()}`;
+        return `${API_BASE_URL}/mantenimiento/mantenimientos/?${params.toString()}`;
     }, [filters]);
 
     useEffect(() => {

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { InventarioContext } from '../inventario/InventarioContext';
 import './Mantenimiento.css';
 
+import { API_BASE_URL } from '../../services/api';
+
 const MantenimientoForm = ({ mantenimiento, onSave, onSuccess, ...props }) => {
     // Need devices list for selection on Create
     const { dispositivos, fetchDispositivos } = useContext(InventarioContext);
@@ -27,7 +29,7 @@ const MantenimientoForm = ({ mantenimiento, onSave, onSuccess, ...props }) => {
         // Load devices if empty? Or simple search?
         // Ideally we should have a searchable Select, but standard Select is fine for limited items.
         // We trigger a fetch just in case.
-        fetchDispositivos('http://127.0.0.1:8000/api/inventario/dispositivos/');
+        fetchDispositivos(`${API_BASE_URL}/inventario/dispositivos/`);
     }, [fetchDispositivos]);
 
     useEffect(() => {

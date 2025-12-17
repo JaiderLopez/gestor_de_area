@@ -5,7 +5,7 @@ import DispositivoForm from './DispositivoForm';
 import MovimientoForm from './MovimientoForm';
 import HistorialMovimientos from './HistorialMovimientos';
 import MantenimientoForm from '../mantenimiento/MantenimientoForm';
-import { createMantenimiento } from '../../services/api';
+import { createMantenimiento, API_BASE_URL } from '../../services/api';
 import './Inventario.css';
 
 const InventarioDashboardPage = () => {
@@ -27,7 +27,7 @@ const InventarioDashboardPage = () => {
         if (filters.categoria) params.append('categoria', filters.categoria);
         if (filters.estado) params.append('estado', filters.estado);
 
-        return `http://127.0.0.1:8000/api/inventario/dispositivos/?${params.toString()}`;
+        return `${API_BASE_URL}/inventario/dispositivos/?${params.toString()}`;
     }, [filters]);
 
     useEffect(() => {

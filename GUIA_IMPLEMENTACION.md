@@ -111,3 +111,31 @@ Una vez que ambos servidores (Backend y Frontend) estén corriendo:
 *   **Error de conexión a Base de Datos:** Verifica que el servicio de PostgreSQL esté corriendo y que las credenciales en `settings.py` coincidan con las configuradas en tu base de datos.
 *   **Error CORS:** Si el frontend no puede conectarse al backend, revisa la configuración `CORS_ALLOWED_ORIGINS` en `settings.py` y asegúrate de que la URL de tu frontend (ej. `http://localhost:3000`) esté en la lista.
 *   **ModuleNotFoundError:** Si ves errores de módulos faltantes (como `dashboard`), asegúrate de haber activado el entorno virtual y que todas las apps estén correctamente listadas en `INSTALLED_APPS` (settings.py). Un reinicio del servidor (`Ctrl+C` y luego `runserver`) suele solucionar problemas de caché de importación.
+
+## 7. Acceso en Red Local
+
+El sistema ha sido configurado para permitir acceso desde otros dispositivos en la misma red.
+
+1.  **Backend:** Ejecuta el servidor escuchando en todas las interfaces:
+    ```bash
+    python manage.py runserver 0.0.0.0:8000
+    ```
+2.  **Frontend:** Inicia la aplicación normalmente (ya está configurado para exponerse en red):
+    ```bash
+    npm start
+    ```
+3.  **Acceso:** Desde otro dispositivo (celular, tablet, otro PC), abre el navegador e ingresa:
+    `http://<IP_DEL_SERVIDOR>:3000`
+    (Donde `<IP_DEL_SERVIDOR>` es la dirección IP de tu computadora, ej. `192.168.1.15`).
+
+## Solución de Problemas de Conexión
+
+Si obtienes errores como `Failed to fetch` o no carga la página en otros dispositivos:
+
+1.  **Firewall de Windows:** Es la causa más común. El Firewall puede bloquear el puerto 8000 (Python) o 3000 (Node.js).
+    *   Intenta desactivar temporalmente el firewall para probar.
+    *   Si funciona, agrega una regla de entrada para los puertos 8000 y 3000.
+    *   Comando para abrir puerto 8000 (Backend) en admin: `netsh advfirewall firewall add rule name="DjangoBackend" dir=in action=allow protocol=TCP localport=8000`
+
+2.  **Red Pública vs Privada:**
+    *   Asegúrate de que tu red Wi-Fi esté marcada como "Privada" en Windows. Las redes "Públicas" bloquean conexiones entrantes por defecto.

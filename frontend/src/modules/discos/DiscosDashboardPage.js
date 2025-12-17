@@ -4,6 +4,7 @@ import { DiscoContext } from './DiscoContext';
 import DiscoCard from './DiscoCard';
 import DiscoForm from './DiscoForm';
 import Modal from '../../components/common/Modal';
+import { API_BASE_URL } from '../../services/api';
 import './Discos.css';
 
 const DiscosDashboardPage = () => {
@@ -27,7 +28,7 @@ const DiscosDashboardPage = () => {
     if (filters.contenido_fecha_hasta) params.append('contenido_fecha_hasta', filters.contenido_fecha_hasta);
     if (filters.espacio_libre_min) params.append('espacio_libre_min', filters.espacio_libre_min);
 
-    const url = `http://127.0.0.1:8000/api/discos/?${params.toString()}`;
+    const url = `${API_BASE_URL}/discos/?${params.toString()}`;
     fetchDiscos(url, isNewQuery);
   }, [filters, fetchDiscos]);
 
@@ -59,7 +60,7 @@ const DiscosDashboardPage = () => {
       espacio_libre_min: '',
     });
     // Reset to default
-    const url = `http://127.0.0.1:8000/api/discos/`;
+    const url = `${API_BASE_URL}/discos/`;
     fetchDiscos(url, true);
   };
 
