@@ -33,11 +33,20 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
   const validate = () => {
     const newErrors = {};
     if (!formData.nombre) newErrors.nombre = 'El nombre es obligatorio.';
+
+    const totalSize = parseFloat(formData.tamanio_gb);
     if (!formData.tamanio_gb) {
       newErrors.tamanio_gb = 'El tamaño es obligatorio.';
-    } else if (isNaN(formData.tamanio_gb) || Number(formData.tamanio_gb) <= 0) {
+    } else if (isNaN(totalSize) || totalSize <= 0) {
       newErrors.tamanio_gb = 'El tamaño debe ser un número positivo.';
     }
+
+    // Validación de peso total de contenidos
+    const totalContentWeight = formData.contenidos.reduce((sum, item) => sum + parseFloat(item.peso_gb || 0), 0);
+    if (totalContentWeight > totalSize) {
+      newErrors.tamanio_gb = `El peso total del contenido (${totalContentWeight.toFixed(2)} GB) supera la capacidad del disco (${totalSize} GB).`;
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -247,14 +256,14 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                 <input
                   type="text"
                   value={scanPath}
-                  onChange={(e) => setScanPath(e.target.value)}
-                  placeholder="Escriba la ruta (ej: D:\) o seleccione carpeta"
+                  placeholder="Seleccione una carpeta para escanear"
+                  readOnly
                   className="scan-path-input"
                 />
                 <button type="button" onClick={handleSelectFolderClick} disabled={scanLoading}>
                   Seleccionar Carpeta
                 </button>
-                <button type="button" onClick={handleScan} disabled={scanLoading || !scanPath}>
+                <button type="button" onClick={handleScan} disabled={scanLoading || selectedFiles.length === 0}>
                   {scanLoading ? 'Escaneando...' : 'Escanear'}
                 </button>
               </div>
