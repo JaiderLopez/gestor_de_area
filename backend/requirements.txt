@@ -1,5 +1,8 @@
-# Django
-django
-djangorestframework
-psycopg2-binary
-django-cors-headers
+Django==5.2.8
+djangorestframework==3.16.1
+django-cors-headers==4.9.0
+django-filter==25.2
+psycopg2-binary==2.9.11
+asgiref==3.10.0
+sqlparse==0.5.3
+tzdata==2025.2
