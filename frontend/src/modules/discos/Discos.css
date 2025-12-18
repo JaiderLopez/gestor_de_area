@@ -52,6 +52,12 @@ body {
   gap: 24px;
 }
 
+@media (max-width: 768px) {
+  .form-columns {
+    flex-direction: column;
+  }
+}
+
 .form-column-left {
   flex: 0 0 35%;
 }

@@ -5,9 +5,14 @@ import './Layout.css';
 
 const Layout = () => {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarCollapsed(!isSidebarCollapsed);
+    };
+
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
     return (
@@ -15,9 +20,17 @@ const Layout = () => {
             <Sidebar
                 isCollapsed={isSidebarCollapsed}
                 toggleSidebar={toggleSidebar}
+                isMobileOpen={isMobileMenuOpen}
+                closeMobileMenu={() => setIsMobileMenuOpen(false)}
             />
+            {isMobileMenuOpen && (
+                <div className="sidebar-overlay" onClick={() => setIsMobileMenuOpen(false)}></div>
+            )}
             <div className={`main-content-wrapper ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
                 <header className="top-bar">
+                    <button className="mobile-menu-btn" onClick={toggleMobileMenu}>
+                        ☰
+                    </button>
                     <div className="search-bar">
                         {/* Placeholder for global search if needed */}
                     </div>

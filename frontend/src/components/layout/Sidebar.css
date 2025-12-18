@@ -15,6 +15,19 @@
   overflow: hidden;
 }
 
+/* Mobile Sidebar Behavior */
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  }
+}
+
 .sidebar.collapsed {
   width: 80px;
 }
