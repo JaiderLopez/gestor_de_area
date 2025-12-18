@@ -31,20 +31,38 @@ class ContenidoDiscoViewSet(viewsets.ModelViewSet):
 class DiscoScanView(APIView):
     def get(self, request, *args, **kwargs):
         path_to_scan = request.query_params.get('path')
+        print(f"DEBUG: Intento de escaneo de ruta: '{path_to_scan}'")
 
         if not path_to_scan:
             return Response({"error": "Se requiere la 'path' del directorio a escanear."}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Normalización de rutas de Windows (ej: D: -> D:\)
         if len(path_to_scan) == 2 and path_to_scan[1] == ':':
             path_to_scan += os.path.sep
+        
+        # Eliminar comillas si el usuario las incluyó manualmente
+        path_to_scan = path_to_scan.strip('"').strip("'")
 
-        if not os.path.exists(path_to_scan):
-            return Response({"error": f"La ruta '{path_to_scan}' no existe."},
-                status=status.HTTP_404_NOT_FOUND)
+        # Diagnóstico de visibilidad
+        try:
+            abs_path = os.path.abspath(path_to_scan)
+            print(f"DEBUG: Ruta absoluta calculada: '{abs_path}'")
+            
+            if not os.path.exists(path_to_scan):
+                import string
+                drives = ['%s:\\' % d for d in string.ascii_uppercase if os.path.exists('%s:\\' % d)]
+                error_msg = f"La ruta '{path_to_scan}' no existe para el servidor. Unidades detectadas: {', '.join(drives)}"
+                print(f"DEBUG ERROR: {error_msg}")
+                return Response({"error": error_msg}, status=status.HTTP_400_BAD_REQUEST)
 
-        if not os.path.isdir(path_to_scan):
-            return Response({"error": f"La ruta '{path_to_scan}' no es un directorio válido."},
-                status=status.HTTP_400_BAD_REQUEST)
+            if not os.path.isdir(path_to_scan):
+                error_msg = f"La ruta '{path_to_scan}' no es un directorio válido."
+                return Response({"error": error_msg}, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception as e:
+            error_msg = f"Error de acceso a la ruta: {str(e)}"
+            print(f"DEBUG ERROR: {error_msg}")
+            return Response({"error": error_msg}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             # El nombre sugerido se sigue calculando a partir de la ruta

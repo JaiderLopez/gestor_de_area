@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { scanDisco } from '../../services/api';
 import './Discos.css'; // Importar el CSS
 
 const DiscoForm = ({ disco, onSave, onSuccess }) => {
@@ -71,6 +70,9 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
   };
 
   const removeContentRow = (index) => {
+    const confirmDelete = window.confirm('¿Está seguro de que desea eliminar este campo de contenido?');
+    if (!confirmDelete) return;
+
     const newContenidos = formData.contenidos.filter((_, i) => i !== index);
     setFormData(prevData => ({
       ...prevData,
@@ -78,14 +80,16 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
     }));
   };
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const handleFileSelect = (e) => {
-    const files = e.target.files;
+    const files = Array.from(e.target.files);
     if (files.length > 0) {
-      // La propiedad webkitRelativePath nos da la ruta relativa del archivo dentro de la carpeta seleccionada.
-      // Ej: "MiCarpeta/subcarpeta/archivo.txt". Queremos solo la parte de la carpeta principal.
+      // Intentamos obtener el nombre de la carpeta raíz
       const fullPath = files[0].webkitRelativePath;
-      const directoryPath = fullPath.split('/')[0];
-      setScanPath(directoryPath);
+      const directoryName = fullPath.split('/')[0];
+      setScanPath(directoryName);
+      setSelectedFiles(files);
     }
   };
 
@@ -94,23 +98,62 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
   };
 
   const handleScan = async () => {
-    if (!scanPath) {
-      setMessage({ type: 'error', text: 'Por favor, seleccione una carpeta para escanear.' });
+    if (selectedFiles.length === 0) {
+      setMessage({ type: 'error', text: 'Por favor, seleccione una carpeta válida para escanear.' });
       return;
     }
+
     setScanLoading(true);
     setMessage({ type: '', text: '' });
+
     try {
-      const data = await scanDisco(scanPath);
+      const topLevelItems = {};
+      let totalSizeBytes = 0;
+
+      selectedFiles.forEach(file => {
+        totalSizeBytes += file.size;
+        const relativePath = file.webkitRelativePath;
+        const parts = relativePath.split('/');
+
+        // El primer elemento es el nombre de la carpeta raíz seleccionada.
+        // El segundo elemento es lo que consideraremos como ítem de primer nivel (archivo o carpeta hija).
+        if (parts.length > 1) {
+          const itemName = parts[1];
+          if (!topLevelItems[itemName]) {
+            topLevelItems[itemName] = {
+              nombre: itemName,
+              fecha_modificacion: new Date(file.lastModified).toISOString().slice(0, 10),
+              peso_bytes: 0,
+              es_carpeta: parts.length > 2
+            };
+          }
+          topLevelItems[itemName].peso_bytes += file.size;
+          // Si encontramos un archivo más reciente dentro, actualizamos la fecha
+          const fileDate = new Date(file.lastModified).toISOString().slice(0, 10);
+          if (fileDate > topLevelItems[itemName].fecha_modificacion) {
+            topLevelItems[itemName].fecha_modificacion = fileDate;
+          }
+        }
+      });
+
+      const contenidos = Object.values(topLevelItems).map(item => ({
+        nombre: item.nombre,
+        fecha_modificacion: item.fecha_modificacion,
+        peso_gb: (item.peso_bytes / (1024 ** 3)).toFixed(2)
+      }));
+
+      const totalSizeGB = (totalSizeBytes / (1024 ** 3)).toFixed(2);
+
       setFormData(prevData => ({
         ...prevData,
-        contenidos: data.contenidos,
-        nombre: data.nombre_sugerido || prevData.nombre,
-        tamanio_gb: data.tamanio_gb_sugerido || prevData.tamanio_gb,
+        contenidos: contenidos,
+        nombre: scanPath || prevData.nombre,
+        tamanio_gb: totalSizeGB || prevData.tamanio_gb,
       }));
-      setMessage({ type: 'success', text: 'Escaneo completado. Nombre y tamaño sugeridos han sido rellenados.' });
+
+      setMessage({ type: 'success', text: `Escaneo completado. Se encontraron ${contenidos.length} ítems principales.` });
     } catch (error) {
-      setMessage({ type: 'error', text: `Error al escanear: ${error.message}` });
+      setMessage({ type: 'error', text: `Error al procesar archivos: ${error.message}` });
     } finally {
       setScanLoading(false);
     }
@@ -204,8 +247,8 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                 <input
                   type="text"
                   value={scanPath}
-                  placeholder="Ninguna carpeta seleccionada"
-                  readOnly
+                  onChange={(e) => setScanPath(e.target.value)}
+                  placeholder="Escriba la ruta (ej: D:\) o seleccione carpeta"
                   className="scan-path-input"
                 />
                 <button type="button" onClick={handleSelectFolderClick} disabled={scanLoading}>

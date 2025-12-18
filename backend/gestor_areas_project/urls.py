@@ -9,7 +9,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('discos.urls')),
+    path('api/discos/', include('discos.urls')),
     path('api/inventario/', include('inventario.urls')),
     path('api/mantenimiento/', include('mantenimiento.urls')),
     path('api/dashboard/', include('dashboard.urls')),

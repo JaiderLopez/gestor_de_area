@@ -3,14 +3,12 @@ from rest_framework.routers import DefaultRouter
 from .views import DiscoViewSet, ContenidoDiscoViewSet, DiscoScanView # Import DiscoScanView
 
 # Se crea un router para registrar las vistas de la API.
+# Se registra el ViewSet de Disco.
 router = DefaultRouter()
-# Se registra el ViewSet de Disco bajo la ruta 'discos'.
-# DRF generará automáticamente las URLs para las acciones CRUD (ej: /discos/, /discos/1/).
-router.register(r'discos', DiscoViewSet, basename='disco')
+router.register(r'', DiscoViewSet, basename='disco')
 
 # Definición manual de URLs anidadas para ContenidoDisco
-# Esto permite rutas como /discos/{disco_pk}/contenidos/
-# El 'disco_pk' estará disponible en los kwargs del ContenidoDiscoViewSet
+# Esto permite rutas como /{disco_pk}/contenidos/
 disco_contenidos_list = ContenidoDiscoViewSet.as_view({
     'get': 'list',
     'post': 'create'
@@ -26,12 +24,12 @@ disco_contenidos_detail = ContenidoDiscoViewSet.as_view({
 # más las URLs anidadas que hemos definido manualmente.
 urlpatterns = [
     # Rutas específicas primero para evitar conflictos con el router
-    path('discos/scan/', DiscoScanView.as_view(), name='disco-scan'),
+    path('scan/', DiscoScanView.as_view(), name='disco-scan'),
     
     # Rutas generadas por el router
     path('', include(router.urls)),
     
     # Rutas anidadas (si es necesario que estén separadas)
-    path('discos/<int:disco_pk>/contenidos/', disco_contenidos_list, name='disco-contenidos-list'),
-    path('discos/<int:disco_pk>/contenidos/<int:pk>/', disco_contenidos_detail, name='disco-contenidos-detail'),
+    path('<int:disco_pk>/contenidos/', disco_contenidos_list, name='disco-contenidos-list'),
+    path('<int:disco_pk>/contenidos/<int:pk>/', disco_contenidos_detail, name='disco-contenidos-detail'),
 ]
