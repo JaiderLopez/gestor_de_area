@@ -92,6 +92,18 @@ const InventarioDashboardPage = () => {
         }
     };
 
+    const [expandedRows, setExpandedRows] = useState(new Set());
+
+    const toggleRow = (id) => {
+        const newExpandedRows = new Set(expandedRows);
+        if (newExpandedRows.has(id)) {
+            newExpandedRows.delete(id);
+        } else {
+            newExpandedRows.add(id);
+        }
+        setExpandedRows(newExpandedRows);
+    };
+
     const handleSuccess = () => {
         handleCloseModal();
         // Optionally refresh URL if needed, but context handles simple cache update
@@ -151,27 +163,34 @@ const InventarioDashboardPage = () => {
                     </thead>
                     <tbody>
                         {dispositivos.map(disp => (
-                            <tr key={disp.id}>
-                                <td><span className="badge badge-light">{disp.codigo_inventario}</span></td>
-                                <td>
+                            <tr
+                                key={disp.id}
+                                className={expandedRows.has(disp.id) ? 'expanded' : ''}
+                                onClick={() => window.innerWidth <= 768 && toggleRow(disp.id)}
+                            >
+                                <td data-label="Código"><span className="badge badge-light">{disp.codigo_inventario}</span></td>
+                                <td data-label="Equipo">
                                     <div className="device-info">
                                         <span className="device-model">{disp.marca} {disp.modelo}</span>
                                         <span className="device-serial">{disp.serial}</span>
                                     </div>
+                                    <span className="expand-indicator mobile-only">
+                                        {expandedRows.has(disp.id) ? '▲' : '▼'}
+                                    </span>
                                 </td>
-                                <td>{disp.categoria_nombre}</td>
-                                <td>{disp.ubicacion}</td>
-                                <td>{disp.responsable}</td>
-                                <td>
+                                <td data-label="Categoría">{disp.categoria_nombre}</td>
+                                <td data-label="Ubicación">{disp.ubicacion}</td>
+                                <td data-label="Responsable">{disp.responsable}</td>
+                                <td data-label="Estado">
                                     <span className={`status-badge status-${disp.estado.toLowerCase()}`}>
                                         {disp.estado}
                                     </span>
                                 </td>
-                                <td>
-                                    <button className="btn-icon" onClick={() => handleOpenMove(disp)} title="Mover/Asignar">⇄</button>
-                                    <button className="btn-icon" onClick={() => handleOpenEdit(disp)} title="Editar">✎</button>
-                                    <button className="btn-icon" onClick={() => handleOpenHistory(disp)} title="Ver Historial">📋</button>
-                                    <button className="btn-icon" onClick={() => handleOpenMaintenance(disp)} title="Programar Mantenimiento">🔧</button>
+                                <td data-label="Acciones" className="actions-cell">
+                                    <button className="btn-icon" onClick={(e) => { e.stopPropagation(); handleOpenMove(disp); }} title="Mover/Asignar">⇄</button>
+                                    <button className="btn-icon" onClick={(e) => { e.stopPropagation(); handleOpenEdit(disp); }} title="Editar">✎</button>
+                                    <button className="btn-icon" onClick={(e) => { e.stopPropagation(); handleOpenHistory(disp); }} title="Ver Historial">📋</button>
+                                    <button className="btn-icon" onClick={(e) => { e.stopPropagation(); handleOpenMaintenance(disp); }} title="Programar Mantenimiento">🔧</button>
                                 </td>
                             </tr>
                         ))}

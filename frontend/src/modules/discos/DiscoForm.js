@@ -292,7 +292,7 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                   <tbody>
                     {formData.contenidos.map((item, index) => (
                       <tr key={index}>
-                        <td>
+                        <td data-label="Nombre">
                           <input
                             type="text"
                             value={item.nombre}
@@ -300,14 +300,14 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                             placeholder="Nombre del contenido"
                           />
                         </td>
-                        <td>
+                        <td data-label="Fecha Modificación">
                           <input
                             type="date"
                             value={item.fecha_modificacion}
                             onChange={(e) => handleContentChange(index, 'fecha_modificacion', e.target.value)}
                           />
                         </td>
-                        <td>
+                        <td data-label="Peso (GB)">
                           <input
                             type="number"
                             step="0.01"
@@ -316,7 +316,7 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                             className="content-weight-input"
                           />
                         </td>
-                        <td>
+                        <td data-label="Acciones">
                           <button type="button" onClick={() => removeContentRow(index)} className="remove-content-button">
                             Eliminar
                           </button>

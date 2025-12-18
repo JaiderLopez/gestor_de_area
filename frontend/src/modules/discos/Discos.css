@@ -560,3 +560,61 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(54, 153, 255, 0.4);
 }
+
+/* Responsive Table to Cards (Internal Form) */
+@media screen and (max-width: 768px) {
+
+  .disco-form .content-table,
+  .disco-form .content-table thead,
+  .disco-form .content-table tbody,
+  .disco-form .content-table th,
+  .disco-form .content-table td,
+  .disco-form .content-table tr {
+    display: block;
+  }
+
+  .disco-form .content-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .disco-form .content-table tr {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 20px;
+    border-radius: 12px;
+    background-color: #212130;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .disco-form .content-table td {
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding-left: 45% !important;
+    text-align: right !important;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .disco-form .content-table td:last-child {
+    border-bottom: none;
+  }
+
+  .disco-form .content-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+  }
+}

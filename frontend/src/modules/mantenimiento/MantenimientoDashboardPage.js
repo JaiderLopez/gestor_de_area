@@ -59,6 +59,18 @@ const MantenimientoDashboardPage = () => {
         }
     };
 
+    const [expandedRows, setExpandedRows] = useState(new Set());
+
+    const toggleRow = (id) => {
+        const newExpandedRows = new Set(expandedRows);
+        if (newExpandedRows.has(id)) {
+            newExpandedRows.delete(id);
+        } else {
+            newExpandedRows.add(id);
+        }
+        setExpandedRows(newExpandedRows);
+    };
+
     const handleSuccess = () => {
         handleCloseModal();
     };
@@ -106,27 +118,34 @@ const MantenimientoDashboardPage = () => {
                     </thead>
                     <tbody>
                         {mantenimientos.map(maint => (
-                            <tr key={maint.id}>
-                                <td>{maint.fecha_programada}</td>
-                                <td>
+                            <tr
+                                key={maint.id}
+                                className={expandedRows.has(maint.id) ? 'expanded' : ''}
+                                onClick={() => window.innerWidth <= 768 && toggleRow(maint.id)}
+                            >
+                                <td data-label="Fecha">{maint.fecha_programada}</td>
+                                <td data-label="Equipo">
                                     <div className="device-info">
                                         <span className="device-model">{maint.dispositivo_modelo}</span>
                                         <span className="device-serial">{maint.dispositivo_codigo}</span>
                                     </div>
+                                    <span className="expand-indicator mobile-only">
+                                        {expandedRows.has(maint.id) ? '▲' : '▼'}
+                                    </span>
                                 </td>
-                                <td>{maint.tipo}</td>
-                                <td>
+                                <td data-label="Tipo">{maint.tipo}</td>
+                                <td data-label="Prioridad">
                                     <span className={`priority-badge priority-${maint.prioridad.toLowerCase()}`}>
                                         {maint.prioridad}
                                     </span>
                                 </td>
-                                <td>
+                                <td data-label="Estado">
                                     <span className={`status-badge status-${maint.estado.toLowerCase().replace('_', '-')}`}>
                                         {maint.estado}
                                     </span>
                                 </td>
-                                <td>
-                                    <button className="btn-icon" onClick={() => handleOpenEdit(maint)} title="Editar/Gestionar">✎</button>
+                                <td data-label="Acciones" className="actions-cell">
+                                    <button className="btn-icon" onClick={(e) => { e.stopPropagation(); handleOpenEdit(maint); }} title="Editar/Gestionar">✎</button>
                                 </td>
                             </tr>
                         ))}

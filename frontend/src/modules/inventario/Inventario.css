@@ -99,6 +99,110 @@
     background-color: #fafbfc;
 }
 
+@media screen and (max-width: 768px) {
+
+    .content-table,
+    .content-table thead,
+    .content-table tbody,
+    .content-table th,
+    .content-table td,
+    .content-table tr {
+        display: block;
+    }
+
+    .content-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .content-table tr {
+        border: 1px solid #ebedf3;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        padding: 5px;
+    }
+
+    .content-table td {
+        border: none;
+        border-bottom: 1px solid #f3f6f9;
+        position: relative;
+        padding-left: 45% !important;
+        text-align: right !important;
+        min-height: 45px;
+        display: none;
+        /* Ocultar por defecto en móviles */
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .content-table td[data-label="Equipo"] {
+        display: flex;
+        /* Siempre mostrar el nombre del equipo */
+        border-bottom: none;
+        padding-left: 15px !important;
+        text-align: left !important;
+        justify-content: space-between;
+        font-weight: 700;
+    }
+
+    .content-table tr.expanded td {
+        display: flex;
+        /* Mostrar todo cuando está expandido */
+    }
+
+    .content-table tr.expanded td[data-label="Equipo"] {
+        border-bottom: 1px solid #f3f6f9;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .content-table td:last-child {
+        border-bottom: none;
+    }
+
+    .content-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 40%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 700;
+        color: #b5b5c3;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+    }
+
+    .content-table td[data-label="Equipo"]:before {
+        content: none;
+        /* No mostrar etiqueta "Equipo" ya que es el título de la card */
+    }
+
+    .device-info {
+        align-items: flex-start;
+    }
+
+    .expand-indicator {
+        font-size: 0.8rem;
+        color: var(--primary);
+        background: rgba(54, 153, 255, 0.1);
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+    }
+
+    .mobile-only {
+        display: inline-flex !important;
+    }
+}
+
 .btn-icon {
     background: transparent;
     border: none;
