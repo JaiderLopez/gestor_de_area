@@ -16,7 +16,7 @@ Antes de comenzar, asegúrate de tener instalado el siguiente software en el dis
 Si tienes acceso al repositorio git, clónalo en tu máquina local. Si tienes el código fuente en un archivo comprimido, descomprímelo en la ubicación deseada.
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone https://github.com/JaiderLopez/gestor_de_area.git
 cd gestor_de_area
 ```
 
@@ -27,7 +27,7 @@ cd gestor_de_area
 
 ```sql
 CREATE DATABASE gestor_areas_db;
-CREATE USER user_admin WITH PASSWORD 'admin111-';
+CREATE USER user_admin WITH PASSWORD 'admin123';
 ALTER ROLE user_admin SET client_encoding TO 'utf8';
 ALTER ROLE user_admin SET default_transaction_isolation TO 'read committed';
 ALTER ROLE user_admin SET timezone TO 'UTC';
