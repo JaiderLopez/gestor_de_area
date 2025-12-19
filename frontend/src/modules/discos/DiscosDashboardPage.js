@@ -47,9 +47,6 @@ const DiscosDashboardPage = () => {
     setFilters(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSearch = () => {
-    applyFilters(true);
-  };
 
   const handleClear = () => {
     setFilters({
@@ -137,8 +134,7 @@ const DiscosDashboardPage = () => {
         </div>
 
         <div className="filter-group" style={{ flex: '0 0 auto' }}>
-          <button onClick={handleSearch} className="btn-search">Filtrar</button>
-          <button onClick={handleClear} className="btn-clear">Limpiar</button>
+          <button onClick={handleClear} className="btn-clear" style={{ height: '100%' }}>Limpiar Filtros</button>
         </div>
       </div>
 

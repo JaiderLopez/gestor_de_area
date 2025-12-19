@@ -4,7 +4,9 @@ const request = async (url, options = {}) => {
   const response = await fetch(url, options);
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error || errorData.message || 'Error en la petición');
+    const error = new Error(errorData.error || errorData.message || 'Error en la petición');
+    error.data = errorData; // Attach the full error data (e.g., field-specific errors)
+    throw error;
   }
   // Handle 204 No Content response
   if (response.status === 204) {

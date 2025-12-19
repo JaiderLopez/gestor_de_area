@@ -14,7 +14,8 @@ const InventarioDashboardPage = () => {
     const [filters, setFilters] = useState({
         search: '',
         categoria: '',
-        estado: ''
+        estado: '',
+        ubicacion: ''
     });
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +27,7 @@ const InventarioDashboardPage = () => {
         if (filters.search) params.append('search', filters.search);
         if (filters.categoria) params.append('categoria', filters.categoria);
         if (filters.estado) params.append('estado', filters.estado);
+        if (filters.ubicacion) params.append('ubicacion', filters.ubicacion);
 
         return `${API_BASE_URL}/inventario/dispositivos/?${params.toString()}`;
     }, [filters]);
@@ -42,6 +44,15 @@ const InventarioDashboardPage = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleResetFilters = () => {
+        setFilters({
+            search: '',
+            categoria: '',
+            estado: '',
+            ubicacion: ''
+        });
     };
 
     // Modal actions
@@ -113,7 +124,12 @@ const InventarioDashboardPage = () => {
         <div className="dashboard-container">
             <div className="dashboard-header">
                 <h1>Inventario de Hardware</h1>
-                <button className="btn btn-primary" onClick={handleOpenCreate}>+ Agregar Equipo</button>
+                <div className="header-actions">
+                    <button className="btn btn-secondary" onClick={handleResetFilters} style={{ marginRight: '10px' }}>
+                        Restablecer Filtros
+                    </button>
+                    <button className="btn btn-primary" onClick={handleOpenCreate}>+ Agregar Equipo</button>
+                </div>
             </div>
 
             <div className="filters-bar">
@@ -144,6 +160,16 @@ const InventarioDashboardPage = () => {
                         <option value="DAÑADO">Dañado</option>
                         <option value="BAJA">De Baja</option>
                     </select>
+                </div>
+                <div className="filter-group">
+                    <input
+                        type="text"
+                        name="ubicacion"
+                        value={filters.ubicacion}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                        placeholder="Filtrar por ubicación..."
+                    />
                 </div>
             </div>
 

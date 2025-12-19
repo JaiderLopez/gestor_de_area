@@ -173,6 +173,7 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
     if (!validate()) return;
 
     setLoading(true);
+    setErrors({});
     setMessage({ type: '', text: '' });
     try {
       const savedDisco = await onSave(formData);
@@ -185,7 +186,22 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
         setTimeout(() => navigate('/discos'), 1500);
       }
     } catch (error) {
-      setMessage({ type: 'error', text: `Error al guardar: ${error.message}` });
+      console.error(error);
+      if (error.data && typeof error.data === 'object') {
+        // Map backend field errors to local errors state
+        const fieldErrors = {};
+        Object.keys(error.data).forEach(key => {
+          if (Array.isArray(error.data[key])) {
+            fieldErrors[key] = error.data[key].join(' ');
+          } else {
+            fieldErrors[key] = error.data[key];
+          }
+        });
+        setErrors(fieldErrors);
+        setMessage({ type: 'error', text: 'Por favor, corrige los errores en el formulario.' });
+      } else {
+        setMessage({ type: 'error', text: `Error al guardar: ${error.message}` });
+      }
       setLoading(false);
     }
   };

@@ -19,6 +19,7 @@ const DispositivoForm = ({ dispositivo, onSave, onSuccess }) => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         fetchCategorias();
@@ -67,9 +68,20 @@ const DispositivoForm = ({ dispositivo, onSave, onSuccess }) => {
             if (onSuccess) onSuccess();
         } catch (err) {
             console.error(err);
-            // Backend error messages usually come as object with field keys
-            // Simple handling for now
-            setError("Error al guardar. Verifica que el código o serial no estén duplicados.");
+            if (err.data && typeof err.data === 'object' && !err.data.error) {
+                const fieldErrors = {};
+                Object.keys(err.data).forEach(key => {
+                    if (Array.isArray(err.data[key])) {
+                        fieldErrors[key] = err.data[key].join(' ');
+                    } else {
+                        fieldErrors[key] = err.data[key];
+                    }
+                });
+                setErrors(fieldErrors);
+                setError("Por favor corrige los errores resaltados.");
+            } else {
+                setError(err.message || "Error al guardar. Verifica que el código o serial no estén duplicados.");
+            }
         } finally {
             setLoading(false);
         }
@@ -94,7 +106,9 @@ const DispositivoForm = ({ dispositivo, onSave, onSuccess }) => {
                         placeholder="Ej: LP-IT-001"
                         required
                         disabled={!!dispositivo} // Optional: block editing unique code
+                        className={errors.codigo_inventario ? 'input-error' : ''}
                     />
+                    {errors.codigo_inventario && <span className="error-text">{errors.codigo_inventario}</span>}
                 </div>
 
                 <div className="form-group">
@@ -105,7 +119,9 @@ const DispositivoForm = ({ dispositivo, onSave, onSuccess }) => {
                         value={formData.serial}
                         onChange={handleChange}
                         placeholder="S/N..."
+                        className={errors.serial ? 'input-error' : ''}
                     />
+                    {errors.serial && <span className="error-text">{errors.serial}</span>}
                 </div>
 
                 <div className="form-group">

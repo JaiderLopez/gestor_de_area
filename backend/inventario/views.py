@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Categoria, Dispositivo, Movimiento
 from .serializers import CategoriaSerializer, DispositivoSerializer, MovimientoSerializer
+from .filters import DispositivoFilter
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -13,7 +14,7 @@ class DispositivoViewSet(viewsets.ModelViewSet):
     queryset = Dispositivo.objects.all()
     serializer_class = DispositivoSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['categoria', 'estado', 'ubicacion']
+    filterset_class = DispositivoFilter
     search_fields = ['codigo_inventario', 'serial', 'marca', 'modelo', 'responsable', 'ubicacion']
     ordering_fields = ['fecha_registro', 'marca']
 

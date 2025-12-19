@@ -402,3 +402,47 @@
     padding: 6px;
     border-radius: 4px;
 }
+
+/* Button styles */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: #3699ff;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(54, 153, 255, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #187de4;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(54, 153, 255, 0.3);
+}
+
+.btn-secondary {
+    background-color: #f3f6f9;
+    color: #7e8299;
+    border: 1px solid #e4e6ef;
+}
+
+.btn-secondary:hover {
+    background-color: #e4e6ef;
+    color: #3f4254;
+    transform: translateY(-1px);
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
