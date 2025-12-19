@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import DiscoViewSet, ContenidoDiscoViewSet, DiscoScanView # Import DiscoScanView
+from .views import DiscoViewSet, ContenidoDiscoViewSet, DiscoScanView, ExportTemplateView, ImportDataView
 
 # Se crea un router para registrar las vistas de la API.
 # Se registra el ViewSet de Disco.
@@ -25,6 +25,8 @@ disco_contenidos_detail = ContenidoDiscoViewSet.as_view({
 urlpatterns = [
     # Rutas específicas primero para evitar conflictos con el router
     path('scan/', DiscoScanView.as_view(), name='disco-scan'),
+    path('export-template/', ExportTemplateView.as_view(), name='disco-export-template'),
+    path('import/', ImportDataView.as_view(), name='disco-import'),
     
     # Rutas generadas por el router
     path('', include(router.urls)),

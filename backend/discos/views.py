@@ -115,3 +115,121 @@ class DiscoScanView(APIView):
                 {"error": f"Error al procesar el escaneo: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class ExportTemplateView(APIView):
+    """
+    Vista para descargar plantilla Excel vacía para importar discos.
+    """
+    def get(self, request):
+        from django.http import HttpResponse
+        from .utils import generate_template
+        
+        try:
+            excel_file = generate_template()
+            
+            response = HttpResponse(
+                excel_file.getvalue(),
+                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
+            response['Content-Disposition'] = 'attachment; filename=plantilla_discos.xlsx'
+            
+            return response
+        except Exception as e:
+            return Response(
+                {"error": f"Error al generar plantilla: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class ImportDataView(APIView):
+    """
+    Vista para importar datos de discos desde archivo Excel.
+    """
+    def post(self, request):
+        from .utils import parse_excel_import, validate_import_data
+        from .models import Disco, ContenidoDisco
+        from .serializers import DiscoSerializer
+        
+        if 'file' not in request.FILES:
+            return Response(
+                {"error": "No se recibió ningún archivo"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        file = request.FILES['file']
+        
+        # Validar extensión
+        if not file.name.endswith('.xlsx'):
+            return Response(
+                {"error": "El archivo debe ser un Excel (.xlsx)"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # Parsear archivo
+            discos_data = parse_excel_import(file)
+            
+            # Validar estructura básica
+            validation_errors = validate_import_data(discos_data)
+            if validation_errors:
+                return Response({
+                    "success": False,
+                    "created": 0,
+                    "errors": validation_errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
+            # Procesar cada disco
+            created_count = 0
+            errors = []
+            
+            for idx, disco_data in enumerate(discos_data, start=2):
+                try:
+                    # Debug: Verificar si los contenidos están presentes
+                    print(f"DEBUG - Procesando disco: {disco_data.get('nombre')}")
+                    print(f"DEBUG - Contenidos recibidos: {len(disco_data.get('contenidos', []))} items")
+                    
+                    serializer = DiscoSerializer(data=disco_data)
+                    if serializer.is_valid():
+                        disco_instance = serializer.save()
+                        print(f"DEBUG - Disco creado con ID: {disco_instance.id}")
+                        print(f"DEBUG - Contenidos guardados: {disco_instance.contenidos.count()}")
+                        created_count += 1
+                    else:
+                        # Agregar errores de validación del serializer
+                        print(f"DEBUG - Errores de validación: {serializer.errors}")
+                        for field, messages in serializer.errors.items():
+                            errors.append({
+                                'row': idx,
+                                'sheet': 'Disco',
+                                'field': field,
+                                'message': ' '.join(messages) if isinstance(messages, list) else str(messages)
+                            })
+                except Exception as e:
+                    print(f"DEBUG - Excepción al procesar disco: {str(e)}")
+                    import traceback
+                    traceback.print_exc()
+                    errors.append({
+                        'row': idx,
+                        'sheet': 'Disco',
+                        'field': 'general',
+                        'message': str(e)
+                    })
+            
+            return Response({
+                "success": len(errors) == 0,
+                "created": created_count,
+                "total": len(discos_data),
+                "errors": errors
+            }, status=status.HTTP_200_OK if len(errors) == 0 else status.HTTP_207_MULTI_STATUS)
+            
+        except ValueError as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error al procesar archivo: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

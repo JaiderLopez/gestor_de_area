@@ -4,6 +4,7 @@ import { DiscoContext } from './DiscoContext';
 import DiscoCard from './DiscoCard';
 import DiscoForm from './DiscoForm';
 import Modal from '../../components/common/Modal';
+import ExcelImportExport from './ExcelImportExport';
 import { API_BASE_URL } from '../../services/api';
 import './Discos.css';
 
@@ -96,9 +97,12 @@ const DiscosDashboardPage = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h1>Gestor de Discos</h1>
-        <button onClick={handleOpenCreateModal} className="btn btn-primary">
-          + Nuevo Disco
-        </button>
+        <div className="header-actions">
+          <ExcelImportExport onImportSuccess={() => applyFilters(true)} />
+          <button onClick={handleOpenCreateModal} className="btn btn-primary">
+            + Nuevo Disco
+          </button>
+        </div>
       </div>
 
       <div className="filters-bar">
