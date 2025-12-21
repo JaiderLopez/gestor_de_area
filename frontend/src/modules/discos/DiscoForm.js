@@ -10,6 +10,7 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
     tipo: 'HDD',
     tamanio_gb: '',
     descripcion: '',
+    estado: 'BUENO',
     contenidos: [],
   });
   const [scanPath, setScanPath] = useState('');
@@ -33,6 +34,7 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
         tipo: disco.tipo || 'HDD',
         tamanio_gb: disco.tamanio_gb || '',
         descripcion: disco.descripcion || '',
+        estado: disco.estado || 'BUENO',
         contenidos: disco.contenidos || [],
       });
     }
@@ -311,6 +313,18 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
               <option value="HDD">HDD</option>
               <option value="SSD">SSD</option>
               <option value="CD/DVD">CD/DVD</option>
+            </select>
+
+            <label htmlFor="estado">Estado del Disco</label>
+            <select
+              id="estado"
+              name="estado"
+              value={formData.estado}
+              onChange={handleChange}
+            >
+              <option value="BUENO">Bueno</option>
+              <option value="EN_RIESGO">En Riesgo</option>
+              <option value="DANADO">Dañado</option>
             </select>
 
             <label htmlFor="tamanio_gb">Tamaño (GB)</label>

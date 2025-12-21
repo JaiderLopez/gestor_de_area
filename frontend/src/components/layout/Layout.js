@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import './Layout.css';
 
 const Layout = () => {
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleSidebar = () => {

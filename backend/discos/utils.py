@@ -16,14 +16,14 @@ def generate_template():
     ws_disco.title = "Disco"
     
     # Headers con estilo
-    headers_disco = ['nombre', 'tipo', 'tamanio_gb', 'descripcion']
+    headers_disco = ['nombre', 'tipo', 'tamanio_gb', 'descripcion', 'estado']
     for col_num, header in enumerate(headers_disco, 1):
         cell = ws_disco.cell(row=1, column=col_num, value=header)
         cell.font = Font(bold=True, color="FFFFFF")
         cell.fill = PatternFill(start_color="3699FF", end_color="3699FF", fill_type="solid")
     
     # Fila de ejemplo
-    ws_disco.append(['Backup 2024', 'HDD', 500, 'Respaldo anual de contabilidad'])
+    ws_disco.append(['Backup 2024', 'HDD', 500, 'Respaldo anual de contabilidad', 'BUENO'])
     
     # Hoja 2: Contenidos
     ws_contenidos = wb.create_sheet(title="Contenidos")
@@ -215,5 +215,18 @@ def validate_import_data(discos_data):
                 'field': 'tamanio_gb',
                 'message': 'El tamaño debe ser un número positivo'
             })
+        
+        # Validar estado (opcional, con valor por defecto)
+        if disco.get('estado'):
+            if disco['estado'] not in ['BUENO', 'EN_RIESGO', 'DANADO']:
+                errors.append({
+                    'row': idx,
+                    'sheet': 'Disco',
+                    'field': 'estado',
+                    'message': 'Estado inválido. Debe ser: BUENO, EN_RIESGO o DANADO'
+                })
+        else:
+            # Si no viene en el Excel, asignar valor por defecto
+            disco['estado'] = 'BUENO'
     
     return errors

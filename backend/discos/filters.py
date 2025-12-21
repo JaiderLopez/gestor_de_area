@@ -60,11 +60,17 @@ class DiscoFilter(django_filters.FilterSet):
             espacio_libre=F('tamanio_gb') - F('espacio_usado')
         ).filter(**{f'espacio_libre__{self.filters[name].lookup_expr}': value})
         return queryset
+    
+    # Filtro por estado
+    estado = django_filters.CharFilter(
+        lookup_expr='iexact',
+        help_text="Filtrar por estado del disco (BUENO, EN_RIESGO, DANADO)."
+    )
 
     class Meta:
         model = Disco
         fields = [
-            'nombre', 'tipo', 'descripcion',
+            'nombre', 'tipo', 'descripcion', 'estado',
             'contenido_nombre', 'contenido_fecha_desde', 'contenido_fecha_hasta',
             'tamanio_gb_min', 'tamanio_gb_max',
             'espacio_libre_min', 'espacio_libre_max'

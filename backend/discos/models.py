@@ -31,6 +31,19 @@ class Disco(models.Model):
         blank=True,
         help_text="Notas adicionales o descripción del contenido general del disco."
     )
+    
+    # Opciones para el campo 'estado'
+    class EstadoDisco(models.TextChoices):
+        BUENO = 'BUENO', 'Bueno'
+        EN_RIESGO = 'EN_RIESGO', 'En Riesgo'
+        DANADO = 'DANADO', 'Dañado'
+    
+    estado = models.CharField(
+        max_length=10,
+        choices=EstadoDisco.choices,
+        default=EstadoDisco.BUENO,
+        help_text="Estado físico/operativo del disco."
+    )
 
     def __str__(self):
         return self.nombre

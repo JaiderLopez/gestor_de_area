@@ -48,7 +48,14 @@ const DiscoCard = ({ disco, onEdit }) => {
           <h3>{disco.nombre}</h3>
           <span className="card-subtitle">{disco.tamanio_gb} GB Totales</span>
         </div>
-        <span className="card-type-badge">{disco.tipo}</span>
+        <div className="card-badges">
+          <span className="card-type-badge">{disco.tipo}</span>
+          <span className={`card-status-badge status-${disco.estado?.toLowerCase()}`}>
+            {disco.estado === 'BUENO' && '✓ Bueno'}
+            {disco.estado === 'EN_RIESGO' && '⚠ En Riesgo'}
+            {disco.estado === 'DANADO' && '✗ Dañado'}
+          </span>
+        </div>
       </div>
 
       <div className="usage-stats">

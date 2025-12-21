@@ -688,6 +688,38 @@ body {
   text-transform: uppercase;
 }
 
+.card-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.card-status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.card-status-badge.status-bueno {
+  background-color: rgba(11, 183, 131, 0.15);
+  color: var(--success);
+  border: 1px solid rgba(11, 183, 131, 0.3);
+}
+
+.card-status-badge.status-en_riesgo {
+  background-color: rgba(255, 168, 0, 0.15);
+  color: var(--warning);
+  border: 1px solid rgba(255, 168, 0, 0.3);
+}
+
+.card-status-badge.status-danado {
+  background-color: rgba(246, 78, 96, 0.15);
+  color: var(--danger);
+  border: 1px solid rgba(246, 78, 96, 0.3);
+}
+
 /* Progress Bar */
 .usage-stats {
   margin-bottom: 20px;

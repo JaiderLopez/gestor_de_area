@@ -17,6 +17,7 @@ const DiscosDashboardPage = () => {
     nombre: '',
     contenido_nombre: '',
     tipo: '',
+    estado: '',
     contenido_fecha_desde: '',
     contenido_fecha_hasta: '',
     espacio_libre_min: '',
@@ -27,6 +28,7 @@ const DiscosDashboardPage = () => {
     if (filters.nombre) params.append('nombre', filters.nombre);
     if (filters.contenido_nombre) params.append('contenido_nombre', filters.contenido_nombre);
     if (filters.tipo) params.append('tipo', filters.tipo);
+    if (filters.estado) params.append('estado', filters.estado);
     if (filters.contenido_fecha_desde) params.append('contenido_fecha_desde', filters.contenido_fecha_desde);
     if (filters.contenido_fecha_hasta) params.append('contenido_fecha_hasta', filters.contenido_fecha_hasta);
     if (filters.espacio_libre_min) params.append('espacio_libre_min', filters.espacio_libre_min);
@@ -56,6 +58,7 @@ const DiscosDashboardPage = () => {
       nombre: '',
       contenido_nombre: '',
       tipo: '',
+      estado: '',
       contenido_fecha_desde: '',
       contenido_fecha_hasta: '',
       espacio_libre_min: '',
@@ -142,6 +145,16 @@ const DiscosDashboardPage = () => {
               <option value="HDD">HDD</option>
               <option value="SSD">SSD</option>
               <option value="CD/DVD">CD/DVD</option>
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label className="filter-label">Estado</label>
+            <select name="estado" value={filters.estado} onChange={handleFilterChange} className="filter-select">
+              <option value="">Todos</option>
+              <option value="BUENO">Bueno</option>
+              <option value="EN_RIESGO">En Riesgo</option>
+              <option value="DANADO">Dañado</option>
             </select>
           </div>
 

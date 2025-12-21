@@ -23,7 +23,7 @@ class DiscoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Disco
-        fields = ['id', 'nombre', 'tipo', 'tamanio_gb', 'descripcion', 'contenidos', 'espacio_usado', 'espacio_libre', 'porcentaje_ocupado']
+        fields = ['id', 'nombre', 'tipo', 'tamanio_gb', 'descripcion', 'estado', 'contenidos', 'espacio_usado', 'espacio_libre', 'porcentaje_ocupado']
 
     def get_espacio_usado(self, obj):
         # Sumar el peso_gb de todos los contenidos asociados
@@ -59,6 +59,7 @@ class DiscoSerializer(serializers.ModelSerializer):
         instance.tipo = validated_data.get('tipo', instance.tipo)
         instance.tamanio_gb = validated_data.get('tamanio_gb', instance.tamanio_gb)
         instance.descripcion = validated_data.get('descripcion', instance.descripcion)
+        instance.estado = validated_data.get('estado', instance.estado)
         instance.save()
 
         # Eliminar contenidos antiguos y crear los nuevos solo si se enviaron
