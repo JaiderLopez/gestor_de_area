@@ -83,24 +83,28 @@ const MantenimientoDashboardPage = () => {
             </div>
 
             <div className="filters-bar">
-                <div className="filter-group">
-                    <select name="estado" value={filters.estado} onChange={handleFilterChange} className="filter-select">
-                        <option value="">Todos los Estados</option>
-                        <option value="PENDIENTE">Pendientes</option>
-                        <option value="EN_PROCESO">En Proceso</option>
-                        <option value="FINALIZADO">Finalizados</option>
-                        <option value="CANCELADO">Cancelados</option>
-                    </select>
-                </div>
-                <div className="filter-group" style={{ flex: 2 }}>
-                    <input
-                        type="text"
-                        name="search"
-                        value={filters.search}
-                        onChange={handleFilterChange}
-                        className="filter-input"
-                        placeholder="Buscar por equipo, falla..."
-                    />
+                <div className="filters-row">
+                    <div className="filter-group filter-group-compact">
+                        <label className="filter-label">Estado</label>
+                        <select name="estado" value={filters.estado} onChange={handleFilterChange} className="filter-select">
+                            <option value="">Todos los Estados</option>
+                            <option value="PENDIENTE">Pendientes</option>
+                            <option value="EN_PROCESO">En Proceso</option>
+                            <option value="FINALIZADO">Finalizados</option>
+                            <option value="CANCELADO">Cancelados</option>
+                        </select>
+                    </div>
+                    <div className="filter-group filter-group-compact">
+                        <label className="filter-label">Buscar</label>
+                        <input
+                            type="text"
+                            name="search"
+                            value={filters.search}
+                            onChange={handleFilterChange}
+                            className="filter-input"
+                            placeholder="Equipo, falla..."
+                        />
+                    </div>
                 </div>
             </div>
 

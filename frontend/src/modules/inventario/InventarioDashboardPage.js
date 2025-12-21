@@ -125,51 +125,60 @@ const InventarioDashboardPage = () => {
             <div className="dashboard-header">
                 <h1>Inventario de Hardware</h1>
                 <div className="header-actions">
-                    <button className="btn btn-secondary" onClick={handleResetFilters} style={{ marginRight: '10px' }}>
-                        Restablecer Filtros
-                    </button>
                     <button className="btn btn-primary" onClick={handleOpenCreate}>+ Agregar Equipo</button>
                 </div>
             </div>
 
             <div className="filters-bar">
-                <div className="filter-group" style={{ flex: 2 }}>
-                    <input
-                        type="text"
-                        name="search"
-                        value={filters.search}
-                        onChange={handleFilterChange}
-                        className="filter-input"
-                        placeholder="Buscar por código, serie, modelo..."
-                    />
-                </div>
-                <div className="filter-group">
-                    <select name="categoria" value={filters.categoria} onChange={handleFilterChange} className="filter-select">
-                        <option value="">Todas las Categorías</option>
-                        {categorias.map(cat => (
-                            <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="filter-group">
-                    <select name="estado" value={filters.estado} onChange={handleFilterChange} className="filter-select">
-                        <option value="">Todos los Estados</option>
-                        <option value="ACTIVO">Activo</option>
-                        <option value="DISPONIBLE">Disponible</option>
-                        <option value="EN_REPARACION">En Reparación</option>
-                        <option value="DAÑADO">Dañado</option>
-                        <option value="BAJA">De Baja</option>
-                    </select>
-                </div>
-                <div className="filter-group">
-                    <input
-                        type="text"
-                        name="ubicacion"
-                        value={filters.ubicacion}
-                        onChange={handleFilterChange}
-                        className="filter-input"
-                        placeholder="Filtrar por ubicación..."
-                    />
+                <div className="filters-row">
+                    <div className="filter-group">
+                        <label className="filter-label">Buscar</label>
+                        <input
+                            type="text"
+                            name="search"
+                            value={filters.search}
+                            onChange={handleFilterChange}
+                            className="filter-input"
+                            placeholder="Código, serie, modelo..."
+                        />
+                    </div>
+                    <div className="filter-group">
+                        <label className="filter-label">Categoría</label>
+                        <select name="categoria" value={filters.categoria} onChange={handleFilterChange} className="filter-select">
+                            <option value="">Todas las Categorías</option>
+                            {categorias.map(cat => (
+                                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label className="filter-label">Estado</label>
+                        <select name="estado" value={filters.estado} onChange={handleFilterChange} className="filter-select">
+                            <option value="">Todos los Estados</option>
+                            <option value="ACTIVO">Activo</option>
+                            <option value="DISPONIBLE">Disponible</option>
+                            <option value="EN_REPARACION">En Reparación</option>
+                            <option value="DAÑADO">Dañado</option>
+                            <option value="BAJA">De Baja</option>
+                        </select>
+                    </div>
+                    <div className="filter-group">
+                        <label className="filter-label">Ubicación</label>
+                        <input
+                            type="text"
+                            name="ubicacion"
+                            value={filters.ubicacion}
+                            onChange={handleFilterChange}
+                            className="filter-input"
+                            placeholder="Ubicación..."
+                        />
+                    </div>
+                    <div className="filter-group btn-group">
+                        <label className="filter-label">&nbsp;</label>
+                        <button className="btn-clear" onClick={handleResetFilters}>
+                            Limpiar Filtros
+                        </button>
+                    </div>
                 </div>
             </div>
 

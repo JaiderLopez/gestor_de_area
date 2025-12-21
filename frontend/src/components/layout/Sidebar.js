@@ -19,9 +19,9 @@ const Sidebar = ({ isCollapsed, toggleSidebar, isMobileOpen, closeMobileMenu }) 
               {!isCollapsed && <span className="link-text">Dashboard</span>}
             </NavLink>
           </li>
-          <li className="nav-section-title">
+          {/* <li className="nav-section-title">
             {!isCollapsed ? 'Módulos' : '...'}
-          </li>
+          </li> */}
           <li>
             <NavLink to="/discos" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active' : '')} title="Gestor de Discos">
               <span className="icon">💾</span>
