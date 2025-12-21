@@ -6,6 +6,7 @@ import MovimientoForm from './MovimientoForm';
 import HistorialMovimientos from './HistorialMovimientos';
 import MantenimientoForm from '../mantenimiento/MantenimientoForm';
 import { createMantenimiento, API_BASE_URL } from '../../services/api';
+import InventarioExcelImport from './InventarioExcelImport';
 import './Inventario.css';
 
 const InventarioDashboardPage = () => {
@@ -125,6 +126,7 @@ const InventarioDashboardPage = () => {
             <div className="dashboard-header">
                 <h1>Inventario de Hardware</h1>
                 <div className="header-actions">
+                    <InventarioExcelImport onImportSuccess={() => fetchDispositivos(buildUrl(), true)} />
                     <button className="btn btn-primary" onClick={handleOpenCreate}>+ Agregar Equipo</button>
                 </div>
             </div>

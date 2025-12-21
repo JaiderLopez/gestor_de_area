@@ -446,3 +446,78 @@
     display: flex;
     gap: 12px;
 }
+
+/* Excel Import/Export Styles */
+.excel-import-export-container {
+    display: flex;
+    align-items: center;
+}
+
+.processing-indicator {
+    margin-left: 10px;
+    color: #3699ff;
+    font-size: 0.9rem;
+    font-style: italic;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.result-stats p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+.error-text {
+    color: #f64e60;
+}
+
+.error-list-container {
+    margin-top: 15px;
+}
+
+.error-list-container h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #f64e60;
+}
+
+.error-list {
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: #fff5f8;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ffe2e5;
+}
+
+.error-item {
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #ffffff;
+    border-left: 3px solid #f64e60;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.error-item strong {
+    color: #181c32;
+    margin-right: 5px;
+}
+
+.error-item p {
+    margin: 4px 0 0 0;
+    color: #5e6278;
+}
