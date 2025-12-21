@@ -274,22 +274,53 @@ body {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
-  align-items: center;
   margin-bottom: 32px;
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  width: 100%;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.filters-row:last-child {
+  margin-bottom: 0;
 }
 
 .filter-group {
   display: flex;
-  gap: 12px;
-  flex: 1;
-  min-width: 200px;
+  flex-direction: column;
+  flex: 1 1 250px;
+  /* Allow fields to grow and have a base width */
+  min-width: 0;
+  /* Allow shrinking below min-content if needed */
 }
 
+/* Specific size for the button group so it doesn't stretch like inputs */
+.filter-group.btn-group {
+  flex: 0 0 auto;
+  min-width: auto;
+}
+
+.filter-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5e6278;
+  /* Slightly darker for better readability */
+  margin-bottom: 8px;
+}
+
+/* Ensure inputs and selects have consistent box model */
 .filter-input,
 .filter-select {
   padding: 10px 16px;
+  /* margin: 0 10px; */
   border: 1px solid #e4e6ef;
   background-color: #f5f8fa;
   border-radius: 8px;
@@ -298,7 +329,7 @@ body {
   outline: none;
   transition: var(--transition);
   font-size: 0.95rem;
-  width: 100%;
+  width: 95%;
 }
 
 .filter-input:focus,
@@ -328,11 +359,17 @@ body {
   background-color: #f5f8fa;
   color: #7e8299;
   border: none;
-  padding: 10px 20px;
+  padding: 0 20px;
+  /* Removed vertical padding since height is fixed */
+  height: 42px;
+  /* Matches filter-input and filter-select */
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-clear:hover {

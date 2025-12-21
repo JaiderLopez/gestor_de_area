@@ -14,7 +14,8 @@ const DiscosDashboardPage = () => {
   const [editingDisco, setEditingDisco] = useState(null);
 
   const [filters, setFilters] = useState({
-    search: '',
+    nombre: '',
+    contenido_nombre: '',
     tipo: '',
     contenido_fecha_desde: '',
     contenido_fecha_hasta: '',
@@ -23,7 +24,8 @@ const DiscosDashboardPage = () => {
 
   const applyFilters = useCallback((isNewQuery = true) => {
     const params = new URLSearchParams();
-    if (filters.search) params.append('search', filters.search);
+    if (filters.nombre) params.append('nombre', filters.nombre);
+    if (filters.contenido_nombre) params.append('contenido_nombre', filters.contenido_nombre);
     if (filters.tipo) params.append('tipo', filters.tipo);
     if (filters.contenido_fecha_desde) params.append('contenido_fecha_desde', filters.contenido_fecha_desde);
     if (filters.contenido_fecha_hasta) params.append('contenido_fecha_hasta', filters.contenido_fecha_hasta);
@@ -51,7 +53,8 @@ const DiscosDashboardPage = () => {
 
   const handleClear = () => {
     setFilters({
-      search: '',
+      nombre: '',
+      contenido_nombre: '',
       tipo: '',
       contenido_fecha_desde: '',
       contenido_fecha_hasta: '',
@@ -106,39 +109,58 @@ const DiscosDashboardPage = () => {
       </div>
 
       <div className="filters-bar">
-        <div className="filter-group" style={{ flex: 2 }}>
-          <input
-            type="text"
-            name="search"
-            className="filter-input"
-            value={filters.search}
-            onChange={handleFilterChange}
-            placeholder="🔍 Buscar disco..."
-          />
+        <div className="filters-row">
+          <div className="filter-group">
+            <label className="filter-label">Nombre del Disco</label>
+            <input
+              type="text"
+              name="nombre"
+              className="filter-input"
+              value={filters.nombre}
+              onChange={handleFilterChange}
+              placeholder="🔍 Buscar por nombre..."
+            />
+          </div>
+          <div className="filter-group">
+            <label className="filter-label">Contenidos</label>
+            <input
+              type="text"
+              name="contenido_nombre"
+              className="filter-input"
+              value={filters.contenido_nombre}
+              onChange={handleFilterChange}
+              placeholder="🔍 Buscar en contenidos..."
+            />
+          </div>
         </div>
 
-        <div className="filter-group">
-          <select name="tipo" value={filters.tipo} onChange={handleFilterChange} className="filter-select">
-            <option value="">Tipo: Todos</option>
-            <option value="HDD">HDD</option>
-            <option value="SSD">SSD</option>
-            <option value="CD/DVD">CD/DVD</option>
-          </select>
-        </div>
+        <div className="filters-row">
+          <div className="filter-group">
+            <label className="filter-label">Tipo de Disco</label>
+            <select name="tipo" value={filters.tipo} onChange={handleFilterChange} className="filter-select">
+              <option value="">Todos</option>
+              <option value="HDD">HDD</option>
+              <option value="SSD">SSD</option>
+              <option value="CD/DVD">CD/DVD</option>
+            </select>
+          </div>
 
-        <div className="filter-group">
-          <input
-            type="number"
-            name="espacio_libre_min"
-            value={filters.espacio_libre_min}
-            onChange={handleFilterChange}
-            placeholder="Min Libre (GB)"
-            className="filter-input"
-          />
-        </div>
+          <div className="filter-group">
+            <label className="filter-label">Espacio Libre (GB)</label>
+            <input
+              type="number"
+              name="espacio_libre_min"
+              value={filters.espacio_libre_min}
+              onChange={handleFilterChange}
+              placeholder="Mínimo..."
+              className="filter-input"
+            />
+          </div>
 
-        <div className="filter-group" style={{ flex: '0 0 auto' }}>
-          <button onClick={handleClear} className="btn-clear" style={{ height: '100%' }}>Limpiar Filtros</button>
+          <div className="filter-group btn-group">
+            <label className="filter-label">&nbsp;</label>
+            <button onClick={handleClear} className="btn-clear">Limpiar Filtros</button>
+          </div>
         </div>
       </div>
 

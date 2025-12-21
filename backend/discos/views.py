@@ -13,7 +13,7 @@ from .filters import DiscoFilter
 
 
 class DiscoViewSet(viewsets.ModelViewSet):
-    queryset = Disco.objects.all().order_by('nombre')
+    queryset = Disco.objects.all().order_by('nombre').distinct()
     serializer_class = DiscoSerializer
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = DiscoFilter
