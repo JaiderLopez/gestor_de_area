@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { migrateContent } from '../../services/api';
+import MigrationModal from './MigrationModal';
 import './Discos.css'; // Importar el CSS
 
 const DiscoForm = ({ disco, onSave, onSuccess }) => {
@@ -17,6 +19,12 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+
+  const [migrationModal, setMigrationModal] = useState({
+    isOpen: false,
+    contenidoIndex: null,
+    contenidoData: null
+  });
 
   useEffect(() => {
     if (disco) {
@@ -87,6 +95,73 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
       ...prevData,
       contenidos: newContenidos,
     }));
+  };
+
+  const handleMigrateClick = (index, contenido) => {
+    // Solo permitir migración si el disco ya está guardado (tiene ID)
+    if (!disco || !disco.id) {
+      setMessage({ type: 'error', text: 'Debe guardar el disco antes de migrar contenidos.' });
+      return;
+    }
+
+    // Solo permitir migración si el contenido tiene ID (ya está guardado)
+    if (!contenido.id) {
+      setMessage({ type: 'error', text: 'Debe guardar el contenido antes de migrarlo.' });
+      return;
+    }
+
+    setMigrationModal({
+      isOpen: true,
+      contenidoIndex: index,
+      contenidoData: contenido
+    });
+  };
+
+  const handleMigrateConfirm = async (discoDestinoId) => {
+    const { contenidoData, contenidoIndex } = migrationModal;
+
+    setLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const result = await migrateContent(contenidoData.id, discoDestinoId);
+
+      // Eliminar el contenido migrado del formulario
+      const newContenidos = formData.contenidos.filter((_, i) => i !== contenidoIndex);
+      setFormData(prevData => ({
+        ...prevData,
+        contenidos: newContenidos,
+      }));
+
+      setMessage({
+        type: 'success',
+        text: result.message || 'Contenido migrado exitosamente.'
+      });
+
+      // Cerrar modal
+      setMigrationModal({
+        isOpen: false,
+        contenidoIndex: null,
+        contenidoData: null
+      });
+
+    } catch (error) {
+      console.error(error);
+      setMessage({
+        type: 'error',
+        text: error.message || 'Error al migrar el contenido.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMigrateCancel = () => {
+    setMigrationModal({
+      isOpen: false,
+      contenidoIndex: null,
+      contenidoData: null
+    });
   };
 
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -333,9 +408,26 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
                           />
                         </td>
                         <td data-label="Acciones">
-                          <button type="button" onClick={() => removeContentRow(index)} className="remove-content-button">
-                            Eliminar
-                          </button>
+                          <div className="action-buttons-group">
+                            <button
+                              type="button"
+                              onClick={() => removeContentRow(index)}
+                              className="action-icon-button delete"
+                              title="Eliminar contenido"
+                            >
+                              🗑️
+                            </button>
+                            {disco && disco.id && item.id && (
+                              <button
+                                type="button"
+                                onClick={() => handleMigrateClick(index, item)}
+                                className="action-icon-button migrate"
+                                title="Migrar a otro disco"
+                              >
+                                ↗️
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -354,6 +446,14 @@ const DiscoForm = ({ disco, onSave, onSuccess }) => {
         <button type="submit" disabled={loading} className="save-button">
           {loading ? 'Guardando...' : 'Guardar Disco'}
         </button>
+
+        <MigrationModal
+          isOpen={migrationModal.isOpen}
+          onClose={handleMigrateCancel}
+          contenido={migrationModal.contenidoData}
+          discoOrigenId={disco?.id}
+          onMigrate={handleMigrateConfirm}
+        />
       </form>
     </div>
   );

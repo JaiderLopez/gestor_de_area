@@ -249,6 +249,227 @@ body {
   box-shadow: 0 0 10px var(--danger-glow);
 }
 
+/* Action Buttons Group */
+.action-buttons-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.action-icon-button {
+  background-color: transparent;
+  border: 1px solid #e4e6ef;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.action-icon-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-icon-button.delete {
+  border-color: rgba(246, 78, 96, 0.3);
+}
+
+.action-icon-button.delete:hover {
+  background-color: rgba(246, 78, 96, 0.1);
+  border-color: var(--danger);
+  box-shadow: 0 2px 8px var(--danger-glow);
+}
+
+.action-icon-button.migrate {
+  border-color: rgba(54, 153, 255, 0.3);
+}
+
+.action-icon-button.migrate:hover {
+  background-color: rgba(54, 153, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+/* ==========================================================================
+   Migration Modal Styles
+   ========================================================================== */
+
+.migration-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.migration-info {
+  background-color: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+.migration-info h4 {
+  margin: 0 0 12px 0;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.content-info-card {
+  background-color: white;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e4e6ef;
+}
+
+.content-info-card p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.content-info-card strong {
+  color: var(--text-main);
+}
+
+.disco-selection h4 {
+  margin: 0 0 16px 0;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
+
+.disco-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.disco-option {
+  background-color: white;
+  border: 2px solid #e4e6ef;
+  border-radius: 8px;
+  padding: 16px;
+  transition: var(--transition);
+  position: relative;
+}
+
+.disco-option:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(54, 153, 255, 0.2);
+}
+
+.disco-option.selected {
+  border-color: var(--success);
+  background-color: rgba(11, 183, 131, 0.05);
+  box-shadow: 0 2px 12px var(--success-glow);
+}
+
+.disco-option.insufficient {
+  opacity: 0.6;
+  border-color: #ddd;
+}
+
+.disco-option.insufficient:hover {
+  border-color: var(--danger);
+  box-shadow: 0 2px 8px rgba(246, 78, 96, 0.2);
+}
+
+.disco-option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.disco-option-header h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.disco-option-details p {
+  margin: 4px 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.insufficient-warning {
+  margin-top: 8px;
+  padding: 6px 10px;
+  background-color: rgba(246, 78, 96, 0.1);
+  border-radius: 4px;
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.selected-indicator {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: var(--success);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.migration-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e4e6ef;
+}
+
+.btn-cancel {
+  background-color: #f5f8fa;
+  color: #7e8299;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cancel:hover {
+  background-color: #e4e6ef;
+  color: var(--text-main);
+}
+
+.btn-confirm {
+  background-color: var(--success);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px var(--success-glow);
+}
+
+.btn-confirm:hover:not(:disabled) {
+  background-color: #0a8039;
+  transform: translateY(-2px);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ==========================================================================
    Dashboard Header & Filters
    ========================================================================== */

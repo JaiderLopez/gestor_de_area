@@ -53,6 +53,17 @@ export const scanDisco = (path) => {
   });
 };
 
+export const migrateContent = (contenidoId, discoDestinoId) => {
+  return request(`${API_BASE_URL}/discos/contenidos/${contenidoId}/migrate/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contenido_id: contenidoId,
+      disco_destino_id: discoDestinoId
+    }),
+  });
+};
+
 // --- Inventario Services ---
 
 export const getDispositivos = (url) => {

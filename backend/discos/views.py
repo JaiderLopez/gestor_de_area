@@ -233,3 +233,88 @@ class ImportDataView(APIView):
                 {"error": f"Error al procesar archivo: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class MigrateContentView(APIView):
+    """
+    Vista para migrar un contenido de un disco a otro.
+    """
+    def post(self, request, contenido_id):
+        disco_destino_id = request.data.get('disco_destino_id')
+        
+        if not disco_destino_id:
+            return Response(
+                {"error": "Se requiere 'disco_destino_id'."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # Obtener el contenido a migrar
+            contenido = ContenidoDisco.objects.get(id=contenido_id)
+            disco_origen = contenido.disco
+            
+            # Obtener el disco destino
+            disco_destino = Disco.objects.get(id=disco_destino_id)
+            
+            # Validar que no sea el mismo disco
+            if disco_origen.id == disco_destino.id:
+                return Response(
+                    {"error": "No se puede migrar contenido al mismo disco."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Calcular espacio libre del disco destino
+            espacio_usado_destino = sum(c.peso_gb for c in disco_destino.contenidos.all())
+            espacio_libre_destino = disco_destino.tamanio_gb - espacio_usado_destino
+            
+            # Validar que hay espacio suficiente
+            if contenido.peso_gb > espacio_libre_destino:
+                return Response(
+                    {
+                        "error": f"Espacio insuficiente. El disco destino tiene {espacio_libre_destino:.2f} GB libres, pero el contenido requiere {contenido.peso_gb:.2f} GB."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Guardar datos del contenido
+            contenido_data = {
+                'nombre': contenido.nombre,
+                'fecha_modificacion': contenido.fecha_modificacion,
+                'peso_gb': contenido.peso_gb
+            }
+            
+            # Eliminar contenido del disco origen
+            contenido.delete()
+            
+            # Crear contenido en disco destino
+            ContenidoDisco.objects.create(
+                disco=disco_destino,
+                **contenido_data
+            )
+            
+            # Serializar ambos discos actualizados
+            disco_origen_serializer = DiscoSerializer(disco_origen)
+            disco_destino_serializer = DiscoSerializer(disco_destino)
+            
+            return Response({
+                "success": True,
+                "message": f"Contenido '{contenido_data['nombre']}' migrado exitosamente.",
+                "disco_origen": disco_origen_serializer.data,
+                "disco_destino": disco_destino_serializer.data
+            }, status=status.HTTP_200_OK)
+            
+        except ContenidoDisco.DoesNotExist:
+            return Response(
+                {"error": "El contenido especificado no existe."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Disco.DoesNotExist:
+            return Response(
+                {"error": "El disco destino especificado no existe."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error al migrar contenido: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
