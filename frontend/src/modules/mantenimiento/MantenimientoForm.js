@@ -29,7 +29,7 @@ const MantenimientoForm = ({ mantenimiento, onSave, onSuccess, ...props }) => {
         // Load devices if empty? Or simple search?
         // Ideally we should have a searchable Select, but standard Select is fine for limited items.
         // We trigger a fetch just in case.
-        fetchDispositivos(`${API_BASE_URL}/inventario/dispositivos/`);
+        fetchDispositivos(`${API_BASE_URL}/inventario/dispositivos/`, true);
     }, [fetchDispositivos]);
 
     useEffect(() => {

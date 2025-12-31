@@ -1,6 +1,7 @@
 import django_filters
 from .models import Disco, ContenidoDisco
-from django.db.models import Sum, F # Import F for database expressions
+from django.db.models import Sum, F, Value, DecimalField # Import F for database expressions
+from django.db.models.functions import Coalesce
 
 class DiscoFilter(django_filters.FilterSet):
     """
@@ -56,7 +57,7 @@ class DiscoFilter(django_filters.FilterSet):
     def filter_espacio_libre(self, queryset, name, value):
         # Anotar el queryset con el espacio usado y luego calcular el espacio libre
         queryset = queryset.annotate(
-            espacio_usado=Sum('contenidos__peso_gb'),
+            espacio_usado=Coalesce(Sum('contenidos__peso_gb'), Value(0, output_field=DecimalField())),
             espacio_libre=F('tamanio_gb') - F('espacio_usado')
         ).filter(**{f'espacio_libre__{self.filters[name].lookup_expr}': value})
         return queryset
