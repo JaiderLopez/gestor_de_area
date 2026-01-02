@@ -131,3 +131,30 @@ export const updateMantenimiento = (id, data) => {
 export const getDashboardStats = () => {
   return request(`${API_BASE_URL}/dashboard/stats/`);
 };
+
+// --- Reportes Services ---
+
+export const getReportes = (url) => {
+  return request(url || `${API_BASE_URL}/reportes/gestion/`);
+};
+
+export const createReportePublico = (data) => {
+  // data must be FormData if sending files
+  return request(`${API_BASE_URL}/reportes/public/create/`, {
+    method: 'POST',
+    // Do NOT set Content-Type header when sending FormData; browser sets it with boundary
+    body: data,
+  });
+};
+
+export const updateReporte = (id, data) => {
+  return request(`${API_BASE_URL}/reportes/gestion/${id}/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+};
+
+export const getReporteStats = () => {
+  return request(`${API_BASE_URL}/reportes/stats/general/`);
+};
