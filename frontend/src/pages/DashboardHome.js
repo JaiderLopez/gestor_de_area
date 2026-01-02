@@ -62,7 +62,10 @@ const DashboardHome = () => {
                 <div style={cardStyle}>
                     <h3 style={{ fontSize: '1.1rem', color: '#181c32', margin: 0 }}>Discos Gestionados</h3>
                     <div style={{ ...valueStyle, color: '#3699ff' }}>{stats.discos.total}</div>
-                    <p style={{ color: '#b5b5c3', fontSize: '0.9rem' }}>Discos catalogados</p>
+                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.85rem' }}>
+                        <span style={{ color: '#b5b5c3' }}>Catalogados</span>
+                        <span style={{ color: '#f64e60' }}>Dañados: {stats.discos.danados_percentage}%</span>
+                    </div>
                 </div>
 
                 {/* INVENTARIO */}

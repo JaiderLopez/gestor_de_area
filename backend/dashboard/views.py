@@ -9,7 +9,11 @@ from django.db.models import Count, Sum
 def dashboard_stats(request):
     # Discos
     discos_count = Disco.objects.count()
-    
+    danados_count = Disco.objects.filter(estado='DANADO').count()
+    danados_percentage = 0
+    if discos_count > 0:
+        danados_percentage = round((danados_count / discos_count) * 100, 1)
+
     # Inventario
     dispositivos_total = Dispositivo.objects.count()
     dispositivos_por_estado = Dispositivo.objects.values('estado').annotate(count=Count('estado'))
@@ -29,7 +33,9 @@ def dashboard_stats(request):
 
     data = {
         'discos': {
-            'total': discos_count
+            'total': discos_count,
+            'danados_count': danados_count,
+            'danados_percentage': danados_percentage
         },
         'inventario': {
             'total': dispositivos_total,
