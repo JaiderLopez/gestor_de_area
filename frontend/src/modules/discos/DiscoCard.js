@@ -73,16 +73,31 @@ const DiscoCard = ({ disco, onEdit }) => {
 
       <div className="content-preview">
         <h4>Contenido Reciente</h4>
-        {contenidosToShow.length > 0 ? (
-          <ul className="content-list">
-            {contenidosToShow.map(c => (
-              <li key={c.id}>{c.nombre}</li>
-            ))}
-            {remainingCount > 0 && <li>... y {remainingCount} más</li>}
-          </ul>
-        ) : (
-          <p style={{ fontSize: '0.9rem', color: '#b5b5c3' }}>Sin contenido indexado</p>
-        )}
+        <div className="contents-tooltip-container">
+          {contenidosToShow.length > 0 ? (
+            <ul className="content-list">
+              {contenidosToShow.map(c => (
+                <li key={c.id}>{c.nombre}</li>
+              ))}
+              {remainingCount > 0 && <li>... y {remainingCount} más</li>}
+            </ul>
+          ) : (
+            <p style={{ fontSize: '0.9rem', color: '#b5b5c3' }}>Sin contenido indexado</p>
+          )}
+
+          {disco.contenidos?.length > 0 && (
+            <div className="contents-tooltip">
+              <div className="tooltip-header">
+                Total: {disco.contenidos.length} contenidos
+              </div>
+              <ul className="tooltip-list">
+                {disco.contenidos.map(c => (
+                  <li key={c.id}>{c.nombre}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="card-actions">

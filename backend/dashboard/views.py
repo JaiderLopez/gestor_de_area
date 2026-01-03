@@ -10,9 +10,14 @@ def dashboard_stats(request):
     # Discos
     discos_count = Disco.objects.count()
     danados_count = Disco.objects.filter(estado='DANADO').count()
+    riesgo_count = Disco.objects.filter(estado='EN_RIESGO').count()
+    
     danados_percentage = 0
+    riesgo_percentage = 0
+    
     if discos_count > 0:
         danados_percentage = round((danados_count / discos_count) * 100, 1)
+        riesgo_percentage = round((riesgo_count / discos_count) * 100, 1)
 
     # Inventario
     dispositivos_total = Dispositivo.objects.count()
@@ -35,7 +40,9 @@ def dashboard_stats(request):
         'discos': {
             'total': discos_count,
             'danados_count': danados_count,
-            'danados_percentage': danados_percentage
+            'danados_percentage': danados_percentage,
+            'riesgo_count': riesgo_count,
+            'riesgo_percentage': riesgo_percentage
         },
         'inventario': {
             'total': dispositivos_total,

@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/reportes/', include('reportes.urls')),
     path('api/mantenimiento/', include('mantenimiento.urls')),
     path('api/dashboard/', include('dashboard.urls')),
+    path('api/discos/', include('discos.urls')),
 ]
 
 from django.conf import settings

@@ -64,6 +64,7 @@ const DashboardHome = () => {
                     <div style={{ ...valueStyle, color: '#3699ff' }}>{stats.discos.total}</div>
                     <div style={{ display: 'flex', gap: '10px', fontSize: '0.85rem' }}>
                         <span style={{ color: '#b5b5c3' }}>Catalogados</span>
+                        <span style={{ color: '#ffa800' }}>Riesgo: {stats.discos.riesgo_percentage ?? 0}%</span>
                         <span style={{ color: '#f64e60' }}>Dañados: {stats.discos.danados_percentage}%</span>
                     </div>
                 </div>
