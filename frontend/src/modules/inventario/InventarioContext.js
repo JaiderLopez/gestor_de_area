@@ -17,6 +17,7 @@ export const InventarioProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [nextPage, setNextPage] = useState(null);
+    const [totalCount, setTotalCount] = useState(0);
 
     // Fetch Dispositivos
     const fetchDispositivos = useCallback(async (url, isNewQuery = false) => {
@@ -24,12 +25,16 @@ export const InventarioProvider = ({ children }) => {
         setError(null);
         try {
             const data = await apiGetDispositivos(url);
+            const results = data.results || data || [];
+            const count = data.count || (Array.isArray(data) ? data.length : results.length);
+
             if (isNewQuery) {
-                setDispositivos(data.results || data);
+                setDispositivos(results);
             } else {
-                setDispositivos(prev => [...prev, ...(data.results || data)]);
+                setDispositivos(prev => [...prev, ...results]);
             }
             setNextPage(data.next);
+            setTotalCount(count);
         } catch (err) {
             setError(err.message);
         } finally {
@@ -123,6 +128,7 @@ export const InventarioProvider = ({ children }) => {
             nextPage,
             fetchDispositivos,
             fetchCategorias,
+            totalCount,
             addDispositivo,
             updateDispositivo,
             createMovimiento,

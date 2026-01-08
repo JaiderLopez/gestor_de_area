@@ -489,6 +489,27 @@ body {
   color: #181c32;
 }
 
+.title-with-count {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.results-counter {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  background-color: #f3f6f9;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.results-counter.loading {
+  opacity: 0.6;
+  font-style: italic;
+}
+
 .filters-bar {
   background-color: var(--card-bg);
   padding: 16px 24px;

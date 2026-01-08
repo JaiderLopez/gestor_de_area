@@ -8,18 +8,24 @@ export const DiscoProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [nextPage, setNextPage] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
 
   const fetchDiscos = useCallback(async (url, isNewQuery = false) => {
     setLoading(true);
     setError(null);
     try {
       const data = await getDiscos(url);
+      const results = data.results || data || [];
+      const count = data.count || (Array.isArray(data) ? data.length : results.length);
+
       if (isNewQuery) {
-        setDiscos(data || []);
+        setDiscos(results);
       } else {
-        setDiscos(prevDiscos => [...prevDiscos, ...(data || [])]);
+        setDiscos(prevDiscos => [...prevDiscos, ...results]);
       }
+
       setNextPage(data.next);
+      setTotalCount(count);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -60,7 +66,7 @@ export const DiscoProvider = ({ children }) => {
   };
 
   return (
-    <DiscoContext.Provider value={{ discos, loading, error, nextPage, fetchDiscos, addDisco, updateDisco, deleteDisco }}>
+    <DiscoContext.Provider value={{ discos, loading, error, nextPage, totalCount, fetchDiscos, addDisco, updateDisco, deleteDisco }}>
       {children}
     </DiscoContext.Provider>
   );

@@ -9,7 +9,7 @@ import { API_BASE_URL } from '../../services/api';
 import './Discos.css';
 
 const DiscosDashboardPage = () => {
-  const { discos, loading, error, nextPage, fetchDiscos, addDisco, updateDisco } = useContext(DiscoContext);
+  const { discos, loading, error, nextPage, totalCount, fetchDiscos, addDisco, updateDisco } = useContext(DiscoContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingDisco, setEditingDisco] = useState(null);
 
@@ -102,7 +102,11 @@ const DiscosDashboardPage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Gestor de Discos</h1>
+        <div className="title-with-count">
+          <h1>Gestor de Discos</h1>
+          {!loading && <span className="results-counter">{totalCount} unidades</span>}
+          {loading && <span className="results-counter loading">Calculando...</span>}
+        </div>
         <div className="header-actions">
           <ExcelImportExport onImportSuccess={() => applyFilters(true)} />
           <button onClick={handleOpenCreateModal} className="btn btn-primary">

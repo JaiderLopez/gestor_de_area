@@ -1,4 +1,25 @@
 /* Inventario specific styles */
+.title-with-count {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.results-counter {
+    font-size: 0.95rem;
+    color: #7e8299;
+    background-color: #f3f6f9;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.results-counter.loading {
+    opacity: 0.6;
+    font-style: italic;
+}
+
 .device-info {
     display: flex;
     flex-direction: column;

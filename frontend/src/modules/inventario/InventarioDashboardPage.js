@@ -10,7 +10,7 @@ import InventarioExcelImport from './InventarioExcelImport';
 import './Inventario.css';
 
 const InventarioDashboardPage = () => {
-    const { dispositivos, categorias, loading, error, fetchDispositivos, fetchCategorias, addDispositivo, updateDispositivo, createMovimiento } = useContext(InventarioContext);
+    const { dispositivos, categorias, loading, error, totalCount, fetchDispositivos, fetchCategorias, addDispositivo, updateDispositivo, createMovimiento } = useContext(InventarioContext);
 
     const [filters, setFilters] = useState({
         search: '',
@@ -124,7 +124,11 @@ const InventarioDashboardPage = () => {
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
-                <h1>Inventario de Hardware</h1>
+                <div className="title-with-count">
+                    <h1>Inventario de Hardware</h1>
+                    {!loading && <span className="results-counter">{totalCount} equipos</span>}
+                    {loading && <span className="results-counter loading">Calculando...</span>}
+                </div>
                 <div className="header-actions">
                     <InventarioExcelImport onImportSuccess={() => fetchDispositivos(buildUrl(), true)} />
                     <button className="btn btn-primary" onClick={handleOpenCreate}>+ Agregar Equipo</button>
