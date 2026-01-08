@@ -220,7 +220,7 @@ const DispositivoForm = ({ dispositivo, onSave, onSuccess }) => {
                         name="especificaciones"
                         value={formData.especificaciones}
                         onChange={handleChange}
-                        rows="4"
+                        rows="12"
                         placeholder="RAM, Procesador, Disco Duro, etc..."
                     ></textarea>
                 </div>

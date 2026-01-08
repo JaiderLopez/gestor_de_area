@@ -73,9 +73,21 @@ const DashboardHome = () => {
                 <div style={cardStyle}>
                     <h3 style={{ fontSize: '1.1rem', color: '#181c32', margin: 0 }}>Inventario Total</h3>
                     <div style={{ ...valueStyle, color: '#0bb783' }}>{stats.inventario.total}</div>
-                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.85rem' }}>
-                        <span style={{ color: '#ffa800' }}>En Reparación: {stats.inventario.estados['EN_PROCESO'] || 0}</span>
+                    <div style={{ display: 'flex', gap: '10px', fontSize: '0.85rem', marginBottom: '15px' }}>
+                        <span style={{ color: '#ffa800' }}>En Reparación: {stats.inventario.estados['EN_REPARACION'] || 0}</span>
                         <span style={{ color: '#1bc5bd' }}>Disponibles: {stats.inventario.estados['DISPONIBLE'] || 0}</span>
+                    </div>
+
+                    {/* Category Breakdown */}
+                    <div style={{ borderTop: '1px solid #f3f6f9', paddingTop: '15px', marginTop: 'auto' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                            {Object.entries(stats.inventario.categorias).map(([name, count]) => (
+                                <div key={name} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem' }}>
+                                    <span style={{ color: '#7e8299' }}>{name}:</span>
+                                    <span style={{ fontWeight: '600', color: '#3f4254' }}>{count}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
 

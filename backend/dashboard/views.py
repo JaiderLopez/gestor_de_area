@@ -22,6 +22,7 @@ def dashboard_stats(request):
     # Inventario
     dispositivos_total = Dispositivo.objects.count()
     dispositivos_por_estado = Dispositivo.objects.values('estado').annotate(count=Count('estado'))
+    dispositivos_por_categoria = Dispositivo.objects.values('categoria__nombre').annotate(count=Count('categoria'))
     
     # Mantenimiento
     mantenimientos_pendientes = Mantenimiento.objects.filter(estado='PENDIENTE').count()
@@ -46,7 +47,8 @@ def dashboard_stats(request):
         },
         'inventario': {
             'total': dispositivos_total,
-            'estados': {item['estado']: item['count'] for item in dispositivos_por_estado}
+            'estados': {item['estado']: item['count'] for item in dispositivos_por_estado},
+            'categorias': {item['categoria__nombre']: item['count'] for item in dispositivos_por_categoria}
         },
         'mantenimiento': {
             'pendientes': mantenimientos_pendientes,
